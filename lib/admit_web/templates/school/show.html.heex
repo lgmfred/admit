@@ -1,0 +1,38 @@
+<h1>Show School</h1>
+
+<ul>
+
+  <li>
+    <strong>School ID:</strong>
+    <%= @school.id %>
+  </li>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @school.name %>
+  </li>
+
+  <li>
+    <strong>Address:</strong>
+    <%= @school.address %>
+  </li>
+
+  <li>
+    <strong>Telephone:</strong>
+    <%= @school.telephone %>
+  </li>
+
+  <li>
+    <strong>Email:</strong>
+    <%= @school.email %>
+  </li>
+
+  <li>
+    <strong>Level:</strong>
+    <%= @school.level %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.school_path(@conn, :edit, @school) %></span> |
+<span><%= link "Back", to: Routes.school_path(@conn, :index) %></span>

@@ -1,0 +1,36 @@
+<h1>Listing Schools</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>School ID</th>
+      <th>Name</th>
+      <th>Address</th>
+      <th>Telephone</th>
+      <th>Email</th>
+      <th>Level</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for school <- @schools do %>
+    <tr>
+      <td><%= school.id %></td>
+      <td><%= school.name %></td>
+      <td><%= school.address %></td>
+      <td><%= school.telephone %></td>
+      <td><%= school.email %></td>
+      <td><%= school.level %></td>
+
+      <td>
+        <span><%= link "Show", to: Routes.school_path(@conn, :show, school) %></span>
+        <span><%= link "Edit", to: Routes.school_path(@conn, :edit, school) %></span>
+        <span><%= link "Delete", to: Routes.school_path(@conn, :delete, school), method: :delete, data: [confirm: "Are you sure?"] %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New School", to: Routes.school_path(@conn, :new) %></span>
