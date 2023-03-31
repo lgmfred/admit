@@ -13,6 +13,6 @@ defmodule Admit.Repo.Migrations.CreateSchools do
       timestamps()
     end
 
-    execute "select setval(pg_get_serial_sequence('schools', 'id'), 1004999)"
+    execute "select setval(pg_get_serial_sequence('schools', 'id'), 1005000)"
   end
 end

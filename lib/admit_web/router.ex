@@ -20,6 +20,7 @@ defmodule AdmitWeb.Router do
     get("/", PageController, :index)
     get("/home", HomeController, :home)
     resources "/schools", SchoolController
+    resources "/students", StudentController
   end
 
   # Other scopes may use custom stacks.
