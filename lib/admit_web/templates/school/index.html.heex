@@ -1,27 +1,29 @@
-<h1>Listing Schools</h1>
+<h1 class="my-4">Listing Schools</h1>
 
-<table>
+<table class="my-4 border-collapse border">
   <thead>
-    <tr>
-      <th>School ID</th>
-      <th>Name</th>
-      <th>Address</th>
-      <th>Telephone</th>
-      <th>Email</th>
-      <th>Level</th>
+    <tr class="border">
+      <th class="border">#</th>
+      <th class="border">School ID</th>
+      <th class="border">Name</th>
+      <th class="border">Address</th>
+      <th class="border">Telephone</th>
+      <th class="border">Email</th>
+      <th class="border">Level</th>
 
       <th></th>
     </tr>
   </thead>
   <tbody>
-<%= for school <- @schools do %>
-    <tr>
-      <td><%= school.id %></td>
-      <td><%= school.name %></td>
-      <td><%= school.address %></td>
-      <td><%= school.telephone %></td>
-      <td><%= school.email %></td>
-      <td><%= school.level %></td>
+<%= for {school, index} <- Enum.with_index(@schools, 1) do %>
+    <tr class="border bg-white odd:bg-gray-100">
+      <td class="border"><%= index %></td>
+      <td class="border"><%= school.id %></td>
+      <td class="border"><%= school.name %></td>
+      <td class="border"><%= school.address %></td>
+      <td class="border"><%= school.telephone %></td>
+      <td class="border"><%= school.email %></td>
+      <td class="border"><%= school.level %></td>
 
       <td>
         <span><%= link "Show", to: Routes.school_path(@conn, :show, school) %></span>
@@ -33,4 +35,4 @@
   </tbody>
 </table>
 
-<span><%= link "New School", to: Routes.school_path(@conn, :new) %></span>
+<span class="my-4"><%= link "New School", to: Routes.school_path(@conn, :new) %></span>
