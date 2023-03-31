@@ -4,7 +4,11 @@ defmodule AdmitWeb.StudentControllerTest do
   import Admit.StudentsFixtures
 
   @create_attrs %{birth_date: ~D[2023-03-25], email: "some email", name: "some name"}
-  @update_attrs %{birth_date: ~D[2023-03-26], email: "some updated email", name: "some updated name"}
+  @update_attrs %{
+    birth_date: ~D[2023-03-26],
+    email: "some updated email",
+    name: "some updated name"
+  }
   @invalid_attrs %{birth_date: nil, email: nil, name: nil}
 
   describe "index" do

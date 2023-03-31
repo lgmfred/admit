@@ -1,4 +1,7 @@
 defmodule Admit.Students.Student do
+  @moduledoc """
+  Students Schema module
+  """
   use Ecto.Schema
   import Ecto.Changeset
 

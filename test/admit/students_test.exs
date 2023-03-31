@@ -35,7 +35,12 @@ defmodule Admit.StudentsTest do
 
     test "update_student/2 with valid data updates the student" do
       student = student_fixture()
-      update_attrs = %{birth_date: ~D[2023-03-26], email: "some updated email", name: "some updated name"}
+
+      update_attrs = %{
+        birth_date: ~D[2023-03-26],
+        email: "some updated email",
+        name: "some updated name"
+      }
 
       assert {:ok, %Student{} = student} = Students.update_student(student, update_attrs)
       assert student.birth_date == ~D[2023-03-26]
