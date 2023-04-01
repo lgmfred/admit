@@ -1,0 +1,7 @@
+<%= if @current_user do %>
+  <%= content_tag(:p, @current_user.email, class: "inline-table text-sky-500") %>
+  <%= link "Log out", to: Routes.user_session_path(@conn, :delete), method: :delete, class: "inline-table"%>
+<% else %>
+  <%= link "Register", to: Routes.user_registration_path(@conn, :new), class: "inline-table text-sky-500" %>
+  <%= link "Log in", to: Routes.user_session_path(@conn, :new), class: "inline-table" %>
+<% end %>

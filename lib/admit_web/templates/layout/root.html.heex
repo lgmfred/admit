@@ -15,8 +15,7 @@
       <section class="shadow-lg my-0 mx-auto max-h-12 block bg-gray-400/75 text-center pb-0.5">
         <a href="home" class="font-mono">Admit</a>
         <label class="inline-table text-blue-600 text-center font-bold text-base uppercase">SOME SWEET HEADING GOES HERE</label>
-        <a href="user_profile" class="inline-table text-sky-500">email@email.com</a>
-        <a href="logout" class="inline-table">Logout</a>
+        <%= render "_user_menu.html", assigns %>
       </section>
       <section class="bg-gray-300 text-center py-0.5 shadow-2xl">
         <nav class="border-solid">
@@ -25,7 +24,7 @@
             <Components.nav_links href="/schools">Schools</Components.nav_links>
             <Components.nav_links href="/admission">Admission</Components.nav_links>
             <Components.nav_links href="/students">Student</Components.nav_links>
-            <Components.nav_links href="/account">Account</Components.nav_links>
+            <Components.nav_links href="/users/settings">Account</Components.nav_links>
             <Components.nav_links href="/icon_link"><i class="fa fa-fw fa-search"></i></Components.nav_links>
           </ul>
         </nav>
