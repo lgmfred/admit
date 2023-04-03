@@ -2,6 +2,7 @@ defmodule AdmitWeb.StudentControllerTest do
   use AdmitWeb.ConnCase
 
   import Admit.StudentsFixtures
+  import Admit.AccountsFixtures
 
   @create_attrs %{birth_date: ~D[2023-03-25], email: "some email", name: "some name"}
   @update_attrs %{
@@ -13,6 +14,8 @@ defmodule AdmitWeb.StudentControllerTest do
 
   describe "index" do
     test "lists all students", %{conn: conn} do
+      user = user_fixture()
+      conn = log_in_user(conn, user)
       conn = get(conn, Routes.student_path(conn, :index))
       assert html_response(conn, 200) =~ "Listing Students"
     end
@@ -20,6 +23,8 @@ defmodule AdmitWeb.StudentControllerTest do
 
   describe "new student" do
     test "renders form", %{conn: conn} do
+      user = user_fixture()
+      conn = log_in_user(conn, user)
       conn = get(conn, Routes.student_path(conn, :new))
       assert html_response(conn, 200) =~ "New Student"
     end
@@ -27,6 +32,8 @@ defmodule AdmitWeb.StudentControllerTest do
 
   describe "create student" do
     test "redirects to show when data is valid", %{conn: conn} do
+      user = user_fixture()
+      conn = log_in_user(conn, user)
       conn = post(conn, Routes.student_path(conn, :create), student: @create_attrs)
 
       assert %{id: id} = redirected_params(conn)
@@ -37,6 +44,8 @@ defmodule AdmitWeb.StudentControllerTest do
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
+      user = user_fixture()
+      conn = log_in_user(conn, user)
       conn = post(conn, Routes.student_path(conn, :create), student: @invalid_attrs)
       assert html_response(conn, 200) =~ "New Student"
     end
@@ -46,6 +55,8 @@ defmodule AdmitWeb.StudentControllerTest do
     setup [:create_student]
 
     test "renders form for editing chosen student", %{conn: conn, student: student} do
+      user = user_fixture()
+      conn = log_in_user(conn, user)
       conn = get(conn, Routes.student_path(conn, :edit, student))
       assert html_response(conn, 200) =~ "Edit Student"
     end
@@ -55,6 +66,8 @@ defmodule AdmitWeb.StudentControllerTest do
     setup [:create_student]
 
     test "redirects when data is valid", %{conn: conn, student: student} do
+      user = user_fixture()
+      conn = log_in_user(conn, user)
       conn = put(conn, Routes.student_path(conn, :update, student), student: @update_attrs)
       assert redirected_to(conn) == Routes.student_path(conn, :show, student)
 
@@ -63,6 +76,8 @@ defmodule AdmitWeb.StudentControllerTest do
     end
 
     test "renders errors when data is invalid", %{conn: conn, student: student} do
+      user = user_fixture()
+      conn = log_in_user(conn, user)
       conn = put(conn, Routes.student_path(conn, :update, student), student: @invalid_attrs)
       assert html_response(conn, 200) =~ "Edit Student"
     end
@@ -72,6 +87,8 @@ defmodule AdmitWeb.StudentControllerTest do
     setup [:create_student]
 
     test "deletes chosen student", %{conn: conn, student: student} do
+      user = user_fixture()
+      conn = log_in_user(conn, user)
       conn = delete(conn, Routes.student_path(conn, :delete, student))
       assert redirected_to(conn) == Routes.student_path(conn, :index)
 
