@@ -5,9 +5,7 @@ defmodule Admit.Schools.School do
   use Ecto.Schema
   import Ecto.Changeset
 
-  @primary_key false
   schema "schools" do
-    field :id, :integer, primary_key: true, read_after_writes: true
     field :name, :string
     field :address, :string
     field :email, :string

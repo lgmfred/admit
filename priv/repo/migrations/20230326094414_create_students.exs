@@ -2,8 +2,7 @@ defmodule Admit.Repo.Migrations.CreateStudents do
   use Ecto.Migration
 
   def change do
-    create table(:students, primary_key: false) do
-      add :id, :serial, primary_key: true
+    create table(:students) do
       add :name, :string
       add :email, :string
       add :birth_date, :date
@@ -11,6 +10,6 @@ defmodule Admit.Repo.Migrations.CreateStudents do
       timestamps()
     end
 
-    execute "select setval(pg_get_serial_sequence('students', 'id'), 10005000)"
+    create(unique_index(:students, [:email]))
   end
 end
