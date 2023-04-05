@@ -21,6 +21,12 @@ defmodule Admit.Students do
     Repo.all(Student)
   end
 
+  def list_students(user_id) do
+    Student
+    |> where([e], e.user_id == ^user_id)
+    |> Repo.all()
+  end
+
   @doc """
   Gets a single student.
 

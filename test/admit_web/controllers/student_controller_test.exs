@@ -52,22 +52,20 @@ defmodule AdmitWeb.StudentControllerTest do
   end
 
   describe "edit student" do
-    setup [:create_student]
-
-    test "renders form for editing chosen student", %{conn: conn, student: student} do
+    test "renders form for editing chosen student", %{conn: conn} do
       user = user_fixture()
       conn = log_in_user(conn, user)
+      student = student_fixture(user_id: user.id)
       conn = get(conn, Routes.student_path(conn, :edit, student))
       assert html_response(conn, 200) =~ "Edit Student"
     end
   end
 
   describe "update student" do
-    setup [:create_student]
-
-    test "redirects when data is valid", %{conn: conn, student: student} do
+    test "redirects when data is valid", %{conn: conn} do
       user = user_fixture()
       conn = log_in_user(conn, user)
+      student = student_fixture(user_id: user.id)
       conn = put(conn, Routes.student_path(conn, :update, student), student: @update_attrs)
       assert redirected_to(conn) == Routes.student_path(conn, :show, student)
 
@@ -75,8 +73,9 @@ defmodule AdmitWeb.StudentControllerTest do
       assert html_response(conn, 200) =~ "some updated email"
     end
 
-    test "renders errors when data is invalid", %{conn: conn, student: student} do
+    test "renders errors when data is invalid", %{conn: conn} do
       user = user_fixture()
+      student = student_fixture(user_id: user.id)
       conn = log_in_user(conn, user)
       conn = put(conn, Routes.student_path(conn, :update, student), student: @invalid_attrs)
       assert html_response(conn, 200) =~ "Edit Student"
@@ -84,11 +83,10 @@ defmodule AdmitWeb.StudentControllerTest do
   end
 
   describe "delete student" do
-    setup [:create_student]
-
-    test "deletes chosen student", %{conn: conn, student: student} do
+    test "deletes chosen student", %{conn: conn} do
       user = user_fixture()
       conn = log_in_user(conn, user)
+      student = student_fixture(user_id: user.id)
       conn = delete(conn, Routes.student_path(conn, :delete, student))
       assert redirected_to(conn) == Routes.student_path(conn, :index)
 
@@ -96,10 +94,5 @@ defmodule AdmitWeb.StudentControllerTest do
         get(conn, Routes.student_path(conn, :show, student))
       end
     end
-  end
-
-  defp create_student(_) do
-    student = student_fixture()
-    %{student: student}
   end
 end
