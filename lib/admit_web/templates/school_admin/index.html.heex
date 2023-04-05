@@ -1,0 +1,28 @@
+<h1>Listing School admins</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Role</th>
+      <th>Level</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for school_admin <- @school_admins do %>
+    <tr>
+      <td><%= school_admin.role %></td>
+      <td><%= school_admin.level %></td>
+
+      <td>
+        <span><%= link "Show", to: Routes.school_admin_path(@conn, :show, school_admin) %></span>
+        <span><%= link "Edit", to: Routes.school_admin_path(@conn, :edit, school_admin) %></span>
+        <span><%= link "Delete", to: Routes.school_admin_path(@conn, :delete, school_admin), method: :delete, data: [confirm: "Are you sure?"] %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New School admin", to: Routes.school_admin_path(@conn, :new) %></span>

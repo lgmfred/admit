@@ -17,8 +17,8 @@ defmodule Admit.Admins.SchoolAdmin do
   @doc false
   def changeset(school_admin, attrs) do
     school_admin
-    |> cast(attrs, [:role, :level])
-    |> validate_required([:role, :level])
+    |> cast(attrs, [:role, :level, :user_id, :school_id])
+    |> validate_required([:role, :level, :user_id, :school_id])
     |> foreign_key_constraint(:user_id)
     |> foreign_key_constraint(:school_id)
   end
