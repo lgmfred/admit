@@ -12,7 +12,7 @@ defmodule Admit.StudentsFixtures do
       attrs
       |> Enum.into(%{
         birth_date: ~D[2023-03-25],
-        email: "some email",
+        email: "student#{System.unique_integer()}@example.com",
         name: "some name"
       })
       |> Admit.Students.create_student()

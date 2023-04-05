@@ -4,8 +4,24 @@ defmodule AdmitWeb.StudentController do
   alias Admit.Students
   alias Admit.Students.Student
 
+  plug :require_user_owns_student when action in [:show, :edit, :update, :delete]
+
+  def require_user_owns_student(conn, _opts) do
+    student_id = String.to_integer(conn.path_params["id"])
+    student = Students.get_student!(student_id)
+
+    if conn.assigns[:current_user].id == student.user_id do
+      conn
+    else
+      conn
+      |> put_flash(:error, "You do not own this resource.")
+      |> redirect(to: Routes.student_path(conn, :index))
+      |> halt()
+    end
+  end
+
   def index(conn, _params) do
-    students = Students.list_students()
+    students = Students.list_students(conn.assigns[:current_user].id)
     render(conn, "index.html", students: students)
   end
 
@@ -15,6 +31,8 @@ defmodule AdmitWeb.StudentController do
   end
 
   def create(conn, %{"student" => student_params}) do
+    student_params = Map.put(student_params, "user_id", conn.assigns[:current_user].id)
+
     case Students.create_student(student_params) do
       {:ok, student} ->
         conn
