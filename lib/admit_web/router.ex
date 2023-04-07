@@ -31,6 +31,7 @@ defmodule AdmitWeb.Router do
     get "/home", HomeController, :home
     resources "/schools", SchoolController, only: [:index, :show]
     resources "/school_admins", SchoolAdminController
+    resources "/classes", ClassController
   end
 
   # Other scopes may use custom stacks.

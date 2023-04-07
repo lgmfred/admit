@@ -12,6 +12,7 @@ defmodule Admit.Schools.School do
     field :telephone, :string
     field :level, :string
     has_many :school_admins, Admit.Admins.SchoolAdmin
+    has_many :classes, Admit.Classes.Class
 
     timestamps()
   end
