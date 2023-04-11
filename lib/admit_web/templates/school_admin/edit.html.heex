@@ -1,0 +1,5 @@
+<h1>Edit School admin</h1>
+
+<%= render "form.html", Map.put(assigns, :action, Routes.school_admin_path(@conn, :update, @school_admin)) %>
+
+<span><%= link "Back", to: Routes.school_admin_path(@conn, :index) %></span>
