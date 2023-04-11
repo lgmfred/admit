@@ -15,7 +15,9 @@ defmodule AdmitWeb.SchoolController do
   end
 
   def create(conn, %{"school" => school_params}) do
-    case Schools.create_school(school_params) do
+    current_user = conn.assigns[:current_user]
+
+    case Schools.create_school(school_params, current_user) do
       {:ok, school} ->
         conn
         |> put_flash(:info, "School created successfully.")

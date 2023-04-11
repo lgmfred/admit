@@ -11,8 +11,7 @@ defmodule Admit.Schools.School do
     field :email, :string
     field :telephone, :string
     field :level, :string
-    has_many :school_admins, Admit.Admins.SchoolAdmin
-    has_many :classes, Admit.Classes.Class
+    has_many :admins, Admit.Accounts.User, on_replace: :delete
 
     timestamps()
   end
