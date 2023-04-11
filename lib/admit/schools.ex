@@ -6,6 +6,7 @@ defmodule Admit.Schools do
   import Ecto.Query, warn: false
   alias Admit.Repo
 
+  alias Admit.Accounts
   alias Admit.Schools.School
 
   @doc """
@@ -47,11 +48,31 @@ defmodule Admit.Schools do
 
       iex> create_school(%{field: bad_value})
       {:error, %Ecto.Changeset{}}
-
   """
   def create_school(attrs \\ %{}) do
     %School{}
     |> School.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Creates a school with an admin.
+
+  ## Examples
+
+      iex> user = user_fixture()
+      iex> create_school(%{field: value}, user)
+      {:ok, %School{}}
+
+      iex> user = user_fixture()
+      iex> create_school(%{field: bad_value}, user)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_school(attrs, admin_user) do
+    %School{}
+    |> School.changeset(attrs)
+    |> Ecto.Changeset.put_assoc(:admins, [admin_user])
     |> Repo.insert()
   end
 
@@ -70,6 +91,24 @@ defmodule Admit.Schools do
   def update_school(%School{} = school, attrs) do
     school
     |> School.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Add new admin user to school
+  """
+  def add_admin(school_id, email) do
+    school =
+      get_school!(school_id)
+      |> Repo.preload([:admins])
+
+    user =
+      Accounts.get_user_by_email(email)
+      |> Repo.preload([:school])
+
+    school
+    |> School.changeset(%{})
+    |> Ecto.Changeset.put_assoc(:admins, [user | school.admins])
     |> Repo.update()
   end
 

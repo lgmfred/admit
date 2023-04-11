@@ -1,12 +1,23 @@
 defmodule Admit.SchoolsTest do
   use Admit.DataCase
 
+  alias Admit.Accounts
+  alias Admit.Repo
   alias Admit.Schools
 
   describe "schools" do
     alias Admit.Schools.School
 
     import Admit.SchoolsFixtures
+    import Admit.AccountsFixtures
+
+    @valid_attrs %{
+      address: "some address",
+      email: "some email",
+      level: "some level",
+      name: "some name",
+      telephone: "some telephone"
+    }
 
     @invalid_attrs %{
       address: nil,
@@ -27,20 +38,23 @@ defmodule Admit.SchoolsTest do
     end
 
     test "create_school/1 with valid data creates a school" do
-      valid_attrs = %{
-        address: "some address",
-        email: "some email",
-        level: "some level",
-        name: "some name",
-        telephone: "some telephone"
-      }
-
-      assert {:ok, %School{} = school} = Schools.create_school(valid_attrs)
+      assert {:ok, %School{} = school} = Schools.create_school(@valid_attrs)
       assert school.address == "some address"
       assert school.email == "some email"
       assert school.level == "some level"
       assert school.name == "some name"
       assert school.telephone == "some telephone"
+    end
+
+    test "create_school/1 with school admin creates a school with associated admins" do
+      user = user_fixture()
+      assert {:ok, %School{} = school} = Schools.create_school(@valid_attrs, user)
+      user = Accounts.get_user!(user.id)
+      school = Repo.preload(school, [:admins])
+
+      assert school.name == "some name"
+      assert user.school_id == school.id
+      assert school.admins == [user]
     end
 
     test "create_school/1 with invalid data returns error changeset" do
@@ -64,6 +78,21 @@ defmodule Admit.SchoolsTest do
       assert school.level == "some updated level"
       assert school.name == "some updated name"
       assert school.telephone == "some updated telephone"
+    end
+
+    test "add_admin/2 add new admin to school admins" do
+      user1 = user_fixture()
+      user2 = user_fixture()
+      assert {:ok, %School{} = school} = Schools.create_school(@valid_attrs, user1)
+      assert {:ok, %School{} = school} = Schools.add_admin(school.id, user2.email)
+
+      user1 = Accounts.get_user!(user1.id) |> Repo.preload([:school])
+      user2 = Accounts.get_user!(user2.id) |> Repo.preload([:school])
+
+      assert user1.school.id == school.id
+      assert user2.school.id == school.id
+      ## !! Weird preload related bug was here!! Brook fixed it!
+      assert Repo.preload(school, [admins: [:school]], force: true).admins == [user1, user2]
     end
 
     test "update_school/2 with invalid data returns error changeset" do
