@@ -12,6 +12,7 @@ defmodule Admit.Schools.School do
     field :telephone, :string
     field :level, :string
     has_many :admins, Admit.Accounts.User, on_replace: :delete
+    has_many :classes, Admit.Classes.Class
 
     timestamps()
   end

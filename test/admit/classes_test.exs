@@ -17,6 +17,16 @@ defmodule Admit.ClassesTest do
       assert Classes.list_classes() == [class]
     end
 
+    test "list_classes/1 returns all classes in a school" do
+      school1 = school_fixture()
+      school2 = school_fixture()
+      class1 = class_fixture(school_id: school1.id)
+      class2 = class_fixture(school_id: school2.id)
+      class3 = class_fixture(school_id: school1.id)
+      assert Classes.list_classes(school1.id) == [class1, class3]
+      assert Classes.list_classes(school2.id) == [class2]
+    end
+
     test "get_class!/1 returns the class with given id" do
       school = school_fixture()
       class = class_fixture(school_id: school.id)

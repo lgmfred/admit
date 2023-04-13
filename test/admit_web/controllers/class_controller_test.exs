@@ -1,6 +1,8 @@
 defmodule AdmitWeb.ClassControllerTest do
   use AdmitWeb.ConnCase
+  alias Admit.Schools
 
+  import Admit.AccountsFixtures
   import Admit.ClassesFixtures
   import Admit.SchoolsFixtures
 
@@ -24,7 +26,10 @@ defmodule AdmitWeb.ClassControllerTest do
 
   describe "create class" do
     test "redirects to show when data is valid", %{conn: conn} do
+      user = user_fixture()
+      conn = log_in_user(conn, user)
       school = school_fixture()
+      {:ok, school} = Schools.add_admin(school.id, user.email)
 
       attrs =
         @create_attrs
@@ -40,6 +45,10 @@ defmodule AdmitWeb.ClassControllerTest do
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
+      user = user_fixture()
+      conn = log_in_user(conn, user)
+      school = school_fixture()
+      {:ok, _school} = Schools.add_admin(school.id, user.email)
       conn = post(conn, Routes.class_path(conn, :create), class: @invalid_attrs)
       assert html_response(conn, 200) =~ "New Class"
     end
@@ -47,7 +56,10 @@ defmodule AdmitWeb.ClassControllerTest do
 
   describe "edit class" do
     test "renders form for editing chosen class", %{conn: conn} do
+      user = user_fixture()
+      conn = log_in_user(conn, user)
       school = school_fixture()
+      {:ok, school} = Schools.add_admin(school.id, user.email)
       class = class_fixture(school_id: school.id)
       conn = get(conn, Routes.class_path(conn, :edit, class))
       assert html_response(conn, 200) =~ "Edit Class"
@@ -56,7 +68,10 @@ defmodule AdmitWeb.ClassControllerTest do
 
   describe "update class" do
     test "redirects when data is valid", %{conn: conn} do
+      user = user_fixture()
+      conn = log_in_user(conn, user)
       school = school_fixture()
+      {:ok, school} = Schools.add_admin(school.id, user.email)
       class = class_fixture(school_id: school.id)
       conn = put(conn, Routes.class_path(conn, :update, class), class: @update_attrs)
       assert redirected_to(conn) == Routes.class_path(conn, :show, class)
@@ -66,7 +81,10 @@ defmodule AdmitWeb.ClassControllerTest do
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
+      user = user_fixture()
+      conn = log_in_user(conn, user)
       school = school_fixture()
+      {:ok, school} = Schools.add_admin(school.id, user.email)
       class = class_fixture(school_id: school.id)
       conn = put(conn, Routes.class_path(conn, :update, class), class: @invalid_attrs)
       assert html_response(conn, 200) =~ "Edit Class"
@@ -75,7 +93,10 @@ defmodule AdmitWeb.ClassControllerTest do
 
   describe "delete class" do
     test "deletes chosen class", %{conn: conn} do
+      user = user_fixture()
+      conn = log_in_user(conn, user)
       school = school_fixture()
+      {:ok, school} = Schools.add_admin(school.id, user.email)
       class = class_fixture(school_id: school.id)
       conn = delete(conn, Routes.class_path(conn, :delete, class))
       assert redirected_to(conn) == Routes.class_path(conn, :index)
