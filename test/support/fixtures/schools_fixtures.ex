@@ -12,7 +12,7 @@ defmodule Admit.SchoolsFixtures do
       attrs
       |> Enum.into(%{
         address: "some address",
-        email: "some email",
+        email: "school-#{System.unique_integer()}@email.com",
         level: "some level",
         name: "some name",
         telephone: "some telephone"

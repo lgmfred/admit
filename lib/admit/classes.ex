@@ -22,6 +22,20 @@ defmodule Admit.Classes do
   end
 
   @doc """
+  Returns the list of classes in a school.
+
+  ## Examples
+
+      iex> list_classes(_)
+      [%Class{}, ...]
+
+  """
+  def list_classes(school_id) do
+    from(c in Class, where: c.school_id == ^school_id)
+    |> Repo.all()
+  end
+
+  @doc """
   Gets a single class.
 
   Raises `Ecto.NoResultsError` if the Class does not exist.
