@@ -1,4 +1,9 @@
 <%= if @current_user do %>
+  <%= if @current_user.school_id do%>
+    <label class="inline-table text-blue-600 text-center font-bold text-base uppercase"><%= Admit.Schools.get_school!(@current_user.school_id).name %></label>
+  <% else %>
+    <label class="inline-table text-blue-600 text-center font-bold text-base uppercase">ADMISSION MANAGEMENT SYSTEM</label>
+  <% end %>
   <%= content_tag(:p, @current_user.email, class: "inline-table text-sky-500") %>
   <%= link "Log out", to: Routes.user_session_path(@conn, :delete), method: :delete, class: "inline-table"%>
 <% else %>
