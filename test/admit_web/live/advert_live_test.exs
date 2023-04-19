@@ -1,0 +1,122 @@
+defmodule AdmitWeb.AdvertLiveTest do
+  use AdmitWeb.ConnCase
+
+  import Phoenix.LiveViewTest
+  import Admit.AdvertsFixtures
+
+  @create_attrs %{
+    deadline: %{day: 16, month: 4, year: 2023},
+    description: "some description",
+    published_on: %{day: 16, month: 4, year: 2023}
+  }
+  @update_attrs %{
+    deadline: %{day: 17, month: 4, year: 2023},
+    description: "some updated description",
+    published_on: %{day: 17, month: 4, year: 2023}
+  }
+  @invalid_attrs %{
+    deadline: %{day: 30, month: 2, year: 2023},
+    description: nil,
+    published_on: %{day: 30, month: 2, year: 2023}
+  }
+
+  defp create_advert(_) do
+    advert = advert_fixture()
+    %{advert: advert}
+  end
+
+  describe "Index" do
+    setup [:create_advert]
+
+    test "lists all adverts", %{conn: conn, advert: advert} do
+      {:ok, _index_live, html} = live(conn, Routes.advert_index_path(conn, :index))
+
+      assert html =~ "Listing Adverts"
+      assert html =~ advert.description
+    end
+
+    test "saves new advert", %{conn: conn} do
+      {:ok, index_live, _html} = live(conn, Routes.advert_index_path(conn, :index))
+
+      assert index_live |> element("a", "New Advert") |> render_click() =~
+               "New Advert"
+
+      assert_patch(index_live, Routes.advert_index_path(conn, :new))
+
+      assert index_live
+             |> form("#advert-form", advert: @invalid_attrs)
+             |> render_change() =~ "is invalid"
+
+      {:ok, _, html} =
+        index_live
+        |> form("#advert-form", advert: @create_attrs)
+        |> render_submit()
+        |> follow_redirect(conn, Routes.advert_index_path(conn, :index))
+
+      assert html =~ "Advert created successfully"
+      assert html =~ "some description"
+    end
+
+    test "updates advert in listing", %{conn: conn, advert: advert} do
+      {:ok, index_live, _html} = live(conn, Routes.advert_index_path(conn, :index))
+
+      assert index_live |> element("#advert-#{advert.id} a", "Edit") |> render_click() =~
+               "Edit Advert"
+
+      assert_patch(index_live, Routes.advert_index_path(conn, :edit, advert))
+
+      assert index_live
+             |> form("#advert-form", advert: @invalid_attrs)
+             |> render_change() =~ "is invalid"
+
+      {:ok, _, html} =
+        index_live
+        |> form("#advert-form", advert: @update_attrs)
+        |> render_submit()
+        |> follow_redirect(conn, Routes.advert_index_path(conn, :index))
+
+      assert html =~ "Advert updated successfully"
+      assert html =~ "some updated description"
+    end
+
+    test "deletes advert in listing", %{conn: conn, advert: advert} do
+      {:ok, index_live, _html} = live(conn, Routes.advert_index_path(conn, :index))
+
+      assert index_live |> element("#advert-#{advert.id} a", "Delete") |> render_click()
+      refute has_element?(index_live, "#advert-#{advert.id}")
+    end
+  end
+
+  describe "Show" do
+    setup [:create_advert]
+
+    test "displays advert", %{conn: conn, advert: advert} do
+      {:ok, _show_live, html} = live(conn, Routes.advert_show_path(conn, :show, advert))
+
+      assert html =~ "Show Advert"
+      assert html =~ advert.description
+    end
+
+    test "updates advert within modal", %{conn: conn, advert: advert} do
+      {:ok, show_live, _html} = live(conn, Routes.advert_show_path(conn, :show, advert))
+
+      assert show_live |> element("a", "Edit") |> render_click() =~
+               "Edit Advert"
+
+      assert_patch(show_live, Routes.advert_show_path(conn, :edit, advert))
+
+      assert show_live
+             |> form("#advert-form", advert: @invalid_attrs)
+             |> render_change() =~ "is invalid"
+
+      {:ok, _, html} =
+        show_live
+        |> form("#advert-form", advert: @update_attrs)
+        |> render_submit()
+        |> follow_redirect(conn, Routes.advert_show_path(conn, :show, advert))
+
+      assert html =~ "Advert updated successfully"
+      assert html =~ "some updated description"
+    end
+  end
+end

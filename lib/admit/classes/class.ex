@@ -9,6 +9,7 @@ defmodule Admit.Classes.Class do
     field :description, :string
     field :name, :string
     belongs_to :school, Admit.Schools.School
+    has_many :adverts, Admit.Adverts.Advert
 
     timestamps()
   end

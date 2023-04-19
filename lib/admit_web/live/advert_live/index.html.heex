@@ -1,0 +1,49 @@
+<h1 class="my-4">Listing Adverts</h1>
+
+<%= if @live_action in [:new, :edit] do %>
+  <.modal return_to={Routes.advert_index_path(@socket, :index)}>
+    <.live_component
+      module={AdmitWeb.AdvertLive.FormComponent}
+      id={@advert.id || :new}
+      title={@page_title}
+      action={@live_action}
+      advert={@advert}
+      return_to={Routes.advert_index_path(@socket, :index)}
+      user={@user}
+      list_classes={@list_classes}
+    />
+  </.modal>
+<% end %>
+
+<table class="my-4 border-collapse border">
+  <thead class="border">
+    <tr class="border">
+      <th class="border">Published</th>
+      <th class="border">School</th>
+      <th class="border">Class</th>
+      <th class="border">Description</th>
+      <th class="border">Deadline</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody id="adverts">
+    <%= for advert <- @adverts do %>
+      <tr id={"advert-#{advert.id}"} class="border bg-white odd:bg-gray-100">
+        <td class="border"><%= advert.published_on %></td>
+        <td class="border"><%= advert.school.name %></td>
+        <td class="border"><%= advert.class.name %></td>
+        <td class="border"><%= advert.description %></td>
+        <td class="border"><%= advert.deadline %></td>
+
+        <td>
+          <span><%= live_redirect "Show", to: Routes.advert_show_path(@socket, :show, advert) %></span>
+          <span><%= live_patch "Edit", to: Routes.advert_index_path(@socket, :edit, advert) %></span>
+          <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: advert.id, data: [confirm: "Are you sure?"] %></span>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<span class="my-4"><%= live_patch "New Advert", to: Routes.advert_index_path(@socket, :new) %></span>
