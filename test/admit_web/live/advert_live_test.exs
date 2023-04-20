@@ -3,6 +3,9 @@ defmodule AdmitWeb.AdvertLiveTest do
 
   import Phoenix.LiveViewTest
   import Admit.AdvertsFixtures
+  import Admit.AccountsFixtures
+  import Admit.ClassesFixtures
+  import Admit.SchoolsFixtures
 
   @create_attrs %{
     deadline: %{day: 16, month: 4, year: 2023},
@@ -10,25 +13,33 @@ defmodule AdmitWeb.AdvertLiveTest do
     published_on: %{day: 16, month: 4, year: 2023}
   }
   @update_attrs %{
-    deadline: %{day: 17, month: 4, year: 2023},
+    deadline: Date.to_string(Date.add(Date.utc_today(), Enum.random(10..40))),
     description: "some updated description",
-    published_on: %{day: 17, month: 4, year: 2023}
+    published_on: Date.to_string(Date.utc_today())
   }
   @invalid_attrs %{
-    deadline: %{day: 30, month: 2, year: 2023},
+    deadline: Date.to_string(Date.add(Date.utc_today(), Enum.random(10..40))),
     description: nil,
-    published_on: %{day: 30, month: 2, year: 2023}
+    published_on: Date.to_string(Date.utc_today())
   }
 
   defp create_advert(_) do
-    advert = advert_fixture()
+    school = school_fixture()
+    class = class_fixture(%{school_id: school.id})
+    advert = advert_fixture(%{school_id: school.id, class_id: class.id})
     %{advert: advert}
   end
 
   describe "Index" do
     setup [:create_advert]
 
-    test "lists all adverts", %{conn: conn, advert: advert} do
+    test "lists all adverts", %{conn: conn} do
+      user = user_fixture()
+      conn = log_in_user(conn, user)
+      school = school_fixture()
+      {:ok, school} = Admit.Schools.add_admin(school.id, user.email)
+      class = class_fixture(%{school_id: school.id})
+      advert = advert_fixture(%{school_id: school.id, class_id: class.id})
       {:ok, _index_live, html} = live(conn, Routes.advert_index_path(conn, :index))
 
       assert html =~ "Listing Adverts"
@@ -36,6 +47,12 @@ defmodule AdmitWeb.AdvertLiveTest do
     end
 
     test "saves new advert", %{conn: conn} do
+      user = user_fixture()
+      school = school_fixture()
+      _class = class_fixture(%{school_id: school.id})
+      {:ok, _school} = Admit.Schools.add_admin(school.id, user.email)
+      conn = log_in_user(conn, user)
+
       {:ok, index_live, _html} = live(conn, Routes.advert_index_path(conn, :index))
 
       assert index_live |> element("a", "New Advert") |> render_click() =~
@@ -57,7 +74,16 @@ defmodule AdmitWeb.AdvertLiveTest do
       assert html =~ "some description"
     end
 
-    test "updates advert in listing", %{conn: conn, advert: advert} do
+    test "updates advert in listing", %{conn: conn} do
+      user = user_fixture()
+      school = school_fixture()
+      school = Admit.Schools.add_admin(school.id, user.email)
+      class = class_fixture(school_id: school.id)
+
+      advert = advert_fixture(%{school_id: school.id, class_id: class.id})
+
+      conn = log_in_user(conn, user)
+
       {:ok, index_live, _html} = live(conn, Routes.advert_index_path(conn, :index))
 
       assert index_live |> element("#advert-#{advert.id} a", "Edit") |> render_click() =~
@@ -79,7 +105,17 @@ defmodule AdmitWeb.AdvertLiveTest do
       assert html =~ "some updated description"
     end
 
-    test "deletes advert in listing", %{conn: conn, advert: advert} do
+    test "deletes advert in listing", %{conn: conn} do
+      user = user_fixture()
+      conn = log_in_user(conn, user)
+      school = school_fixture()
+      {:ok, school} = Admit.Schools.add_admin(school.id, user.email)
+      class = class_fixture(%{school_id: school.id})
+
+      advert =
+        advert_fixture(%{school_id: school.id, class_id: class.id})
+        |> Admit.Repo.preload([:school, :class])
+
       {:ok, index_live, _html} = live(conn, Routes.advert_index_path(conn, :index))
 
       assert index_live |> element("#advert-#{advert.id} a", "Delete") |> render_click()
@@ -88,16 +124,28 @@ defmodule AdmitWeb.AdvertLiveTest do
   end
 
   describe "Show" do
-    setup [:create_advert]
+    test "displays advert", %{conn: conn} do
+      user = user_fixture()
+      conn = log_in_user(conn, user)
+      school = school_fixture()
+      {:ok, school} = Admit.Schools.add_admin(school.id, user.email)
+      class = class_fixture(%{school_id: school.id})
+      advert = advert_fixture(%{school_id: school.id, class_id: class.id})
 
-    test "displays advert", %{conn: conn, advert: advert} do
       {:ok, _show_live, html} = live(conn, Routes.advert_show_path(conn, :show, advert))
 
       assert html =~ "Show Advert"
       assert html =~ advert.description
     end
 
-    test "updates advert within modal", %{conn: conn, advert: advert} do
+    test "updates advert within modal", %{conn: conn} do
+      user = user_fixture()
+      conn = log_in_user(conn, user)
+      school = school_fixture()
+      {:ok, school} = Admit.Schools.add_admin(school.id, user.email)
+      class = class_fixture(%{school_id: school.id})
+      advert = advert_fixture(%{school_id: school.id, class_id: class.id})
+
       {:ok, show_live, _html} = live(conn, Routes.advert_show_path(conn, :show, advert))
 
       assert show_live |> element("a", "Edit") |> render_click() =~

@@ -1,4 +1,7 @@
 defmodule Admit.Adverts.Advert do
+  @moduledoc """
+  Advert schema module
+  """
   use Ecto.Schema
   import Ecto.Changeset
 

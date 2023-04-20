@@ -29,7 +29,9 @@ defmodule AdmitWeb.AdvertLive.FormComponent do
 
   defp save_advert(socket, :edit, advert_params) do
     case Adverts.update_advert(socket.assigns.advert, advert_params) do
-      {:ok, _advert} ->
+      {:ok, advert} ->
+        AdmitWeb.Endpoint.broadcast_from(self(), "adverts", "update_advert", advert)
+
         {:noreply,
          socket
          |> put_flash(:info, "Advert updated successfully")
@@ -44,7 +46,9 @@ defmodule AdmitWeb.AdvertLive.FormComponent do
     advert_params = Map.put(advert_params, "school_id", socket.assigns.user.school_id)
 
     case Adverts.create_advert(advert_params) do
-      {:ok, _advert} ->
+      {:ok, advert} ->
+        AdmitWeb.Endpoint.broadcast_from(self(), "adverts", "create_advert", advert)
+
         {:noreply,
          socket
          |> put_flash(:info, "Advert created successfully")

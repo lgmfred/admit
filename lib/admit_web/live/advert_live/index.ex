@@ -1,18 +1,25 @@
 defmodule AdmitWeb.AdvertLive.Index do
+  @moduledoc """
+  AdmitWeb.AdvertLive.Index module documentation
+  """
   use AdmitWeb, :live_view
 
-  alias Hex.Repo
+  alias Admit.Accounts
   alias Admit.Adverts
   alias Admit.Adverts.Advert
-  alias Admit.Accounts
+  alias Admit.Repo
 
   @impl true
   def mount(_params, session, socket) do
+    if connected?(socket) do
+      AdmitWeb.Endpoint.subscribe("adverts")
+    end
+
     user = Accounts.get_user_by_session_token(session["user_token"])
 
     adverts =
       list_adverts()
-      |> Admit.Repo.preload([:school, :class])
+      |> Repo.preload([:school, :class])
 
     {:ok,
      socket
@@ -49,7 +56,35 @@ defmodule AdmitWeb.AdvertLive.Index do
     advert = Adverts.get_advert!(id)
     {:ok, _} = Adverts.delete_advert(advert)
 
-    {:noreply, assign(socket, :adverts, list_adverts())}
+    AdmitWeb.Endpoint.broadcast_from(self(), "adverts", "delete_advert", %{advert_id: id})
+    filtered_adverts = Enum.reject(socket.assigns.adverts, fn each -> each.id == advert.id end)
+
+    {:noreply, assign(socket, :adverts, filtered_adverts)}
+  end
+
+  @impl true
+  def handle_info(%{event: "create_advert", payload: advert}, socket) do
+    {:noreply, assign(socket, :adverts, [advert | socket.assigns.adverts])}
+  end
+
+  def handle_info(%{event: "update_advert", payload: updated_advert}, socket) do
+    updated_adverts =
+      Enum.map(socket.assigns.adverts, fn each ->
+        if each.id == updated_advert.id do
+          updated_advert
+        else
+          each
+        end
+      end)
+
+    {:noreply, assign(socket, :adverts, updated_adverts)}
+  end
+
+  def handle_info(%{event: "delete_advert", payload: payload}, socket) do
+    advert_id = String.to_integer(payload.advert_id)
+    filtered_adverts = Enum.reject(socket.assigns.adverts, fn each -> each.id == advert_id end)
+
+    {:noreply, assign(socket, :adverts, filtered_adverts)}
   end
 
   defp list_adverts do

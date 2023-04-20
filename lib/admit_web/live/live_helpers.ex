@@ -1,4 +1,7 @@
 defmodule AdmitWeb.LiveHelpers do
+  @moduledoc """
+  AdmitWeb.LiveHelpers module documentation
+  """
   import Phoenix.LiveView
   import Phoenix.LiveView.Helpers
 

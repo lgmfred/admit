@@ -32,6 +32,10 @@ defmodule AdmitWeb.Router do
     resources "/schools", SchoolController, only: [:index, :show]
     resources "/school_admins", SchoolAdminController
     resources "/classes", ClassController
+  end
+
+  scope "/", AdmitWeb do
+    pipe_through [:browser, :require_authenticated_user]
 
     live "/adverts", AdvertLive.Index, :index
     live "/adverts/new", AdvertLive.Index, :new
