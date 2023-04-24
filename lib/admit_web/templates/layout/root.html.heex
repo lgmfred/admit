@@ -13,13 +13,13 @@
   <body>
     <header class="z-10 my-0">
       <section class="shadow-lg my-0 mx-auto max-h-12 block bg-gray-400/75 text-center pb-0.5">
-        <a href="home" class="font-mono">Admit</a>
+        <a href="#" class="font-mono">Admit</a>
         <%= render "_user_menu.html", assigns %>
       </section>
       <section class="bg-gray-300 text-center py-0.5 shadow-2xl">
         <nav class="border-solid">
           <ul class="inline-flex px-4 rounded-2xl">
-            <Components.nav_links href="/home"><i class="fa fa-fw fa-home"></i></Components.nav_links>
+            <Components.nav_links href="/adverts"><i class="fa fa-fw fa-home"></i></Components.nav_links>
             <Components.nav_links href="/schools">Schools</Components.nav_links>
             <Components.nav_links href="/admission">Admission</Components.nav_links>
             <Components.nav_links href="/students">Student</Components.nav_links>
@@ -30,7 +30,7 @@
       </section>
     </header>
     <%= @inner_content %>
-    <footer class="block text-center">
+    <footer class="fixed bottom-0 w-full bg-gray-300 py-1 text-center">
       <p>Copyright © 2023 Admit.</p>
     </footer>
   </body>

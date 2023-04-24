@@ -2,13 +2,107 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
-/* Customize the default font used in Admit project */
-@layer base {
-  html {
-    font-family: 'Space Mono', monospace, 'Proxima Nova', system-ui, sans-serif;
-  }
-}
 /* This file is for your main application CSS */
+
+body {
+  @apply flex flex-col min-h-screen antialiased relative bg-slate-200 font-mono;
+}
+
+main {
+  @apply max-w-6xl mx-auto py-6 px-4 sm:px-6 lg:px-8;
+}
+
+
+/* Authentication */
+
+form[id="login_form"],
+form[id="registration_form"],
+form[id="reset_password_form"],
+form[id="confirmation_form"],
+form[id="resend_confirmation_form"],
+form[id="email_form"],
+form[id="password_form"] {
+  @apply bg-white px-6 py-6 my-6 mx-auto w-full max-w-md shadow rounded-lg;
+}
+form[id="login_form"] > div,
+form[id="registration_form"] > div,
+form[id="reset_password_form"] > div,
+form[id="confirmation_form"] > div,
+form[id="resend_confirmation_form"] > div,
+form[id="email_form"] > div,
+form[id="password_form"] > div {
+  @apply mt-0;
+}
+form[id="login_form"] label,
+form[id="registration_form"] label,
+form[id="reset_password_form"] label,
+form[id="confirmation_form"] label,
+form[id="resend_confirmation_form"] label,
+form[id="email_form"] label,
+form[id="password_form"] label {
+  @apply block mb-0 text-sm font-semibold text-slate-900;
+}
+form[id="login_form"] input[type="email"],
+form[id="login_form"] input[type="password"],
+form[id="registration_form"] input[type="email"],
+form[id="registration_form"] input[type="password"],
+form[id="reset_password_form"] input[type="email"],
+form[id="reset_password_form"] input[type="password"],
+form[id="confirmation_form"] input[type="email"],
+form[id="confirmation_form"] input[type="password"],
+form[id="resend_confirmation_form"] input[type="email"],
+form[id="resend_confirmation_form"] input[type="password"],
+form[id="email_form"] input[type="email"],
+form[id="email_form"] input[type="password"],
+form[id="password_form"] input[type="email"],
+form[id="password_form"] input[type="password"] {
+  @apply mb-4 appearance-none block w-full px-3 py-2 border border-slate-300 rounded-md transition duration-150 ease-in-out text-sm;
+}
+form[id="login_form"] input[type="email"]:focus,
+form[id="login_form"] input[type="password"]:focus,
+form[id="registration_form"] input[type="email"]:focus,
+form[id="registration_form"] input[type="password"]:focus,
+form[id="reset_password_form"] input[type="email"]:focus,
+form[id="reset_password_form"] input[type="password"]:focus,
+form[id="confirmation_form"] input[type="email"]:focus,
+form[id="confirmation_form"] input[type="password"]:focus,
+form[id="resend_confirmation_form"] input[type="email"]:focus,
+form[id="resend_confirmation_form"] input[type="password"]:focus,
+form[id="email_form"] input[type="email"]:focus,
+form[id="email_form"] input[type="password"]:focus,
+form[id="password_form"] input[type="email"]:focus,
+form[id="password_form"] input[type="password"]:focus {
+  @apply outline-none ring ring-indigo-300 border-indigo-300;
+}
+form[id="login_form"] input[type="checkbox"],
+form[id="registration_form"] input[type="checkbox"],
+form[id="reset_password_form"] input[type="checkbox"],
+form[id="confirmation_form"] input[type="checkbox"],
+form[id="resend_confirmation_form"] input[type="checkbox"],
+form[id="email_form"] input[type="checkbox"],
+form[id="password_form"] input[type="checkbox"] {
+  @apply inline-block mr-1;
+}
+form[id="login_form"] button,
+form[id="registration_form"] button,
+form[id="reset_password_form"] button,
+form[id="confirmation_form"] button,
+form[id="resend_confirmation_form"] button,
+form[id="email_form"] button,
+form[id="password_form"] button {
+  @apply mt-2 w-full py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 transition duration-150 ease-in-out
+    focus:outline-none focus:border-indigo-700 focus:ring focus:ring-indigo-300
+    active:bg-indigo-700 hover:bg-indigo-500;
+}
+form[id="login_form"] + p,
+form[id="registration_form"] + p,
+form[id="reset_password_form"] + p,
+form[id="confirmation_form"] + p,
+form[id="resend_confirmation_form"] + p,
+form[id="email_form"] + p,
+form[id="password_form"] + p {
+  @apply text-center;
+}
 
 /* Alerts and form errors used by phx.new */
 .alert {

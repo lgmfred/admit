@@ -15,7 +15,7 @@ defmodule AdmitWeb.Components do
   def main_header(assigns) do
     ~H"""
     <section class="shadow-lg my-0 mx-auto max-h-12 block bg-gray-400/75 text-center pb-0.5">
-      <a href="home" class="font-mono">Admit</a>
+      <a href="#" class="font-mono"><img src="/images/admit.png" /></a>
       <%!-- <%= render "_user_menu.html", assigns %> --%>
     </section>
     """
@@ -26,7 +26,7 @@ defmodule AdmitWeb.Components do
     <section class="bg-gray-300 text-center py-0.5 shadow-2xl">
       <nav class="border-solid">
         <ul class="inline-flex px-4 rounded-2xl">
-          <.nav_links href="/home"><i class="fa fa-fw fa-home"></i></.nav_links>
+          <.nav_links href="/adverts"><i class="fa fa-fw fa-home"></i></.nav_links>
           <.nav_links href="/schools">Schools</.nav_links>
           <.nav_links href="/admission">Admission</.nav_links>
           <.nav_links href="/students">Student</.nav_links>
