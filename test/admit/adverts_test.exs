@@ -7,7 +7,6 @@ defmodule Admit.AdvertsTest do
     alias Admit.Adverts.Advert
 
     import Admit.AdvertsFixtures
-    import Admit.AccountsFixtures
     import Admit.SchoolsFixtures
     import Admit.ClassesFixtures
 

@@ -34,9 +34,13 @@ defmodule AdmitWeb.AdvertLive.Index do
   end
 
   defp apply_action(socket, :edit, %{"id" => id}) do
+    advert =
+      Adverts.get_advert!(id)
+      |> Repo.preload([:school, :class])
+
     socket
     |> assign(:page_title, "Edit Advert")
-    |> assign(:advert, Adverts.get_advert!(id))
+    |> assign(:advert, advert)
   end
 
   defp apply_action(socket, :new, _params) do

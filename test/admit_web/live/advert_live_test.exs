@@ -8,9 +8,9 @@ defmodule AdmitWeb.AdvertLiveTest do
   import Admit.SchoolsFixtures
 
   @create_attrs %{
-    deadline: %{day: 16, month: 4, year: 2023},
+    deadline: Date.to_string(Date.add(Date.utc_today(), Enum.random(10..40))),
     description: "some description",
-    published_on: %{day: 16, month: 4, year: 2023}
+    published_on: Date.to_string(Date.utc_today())
   }
   @update_attrs %{
     deadline: Date.to_string(Date.add(Date.utc_today(), Enum.random(10..40))),
@@ -23,16 +23,7 @@ defmodule AdmitWeb.AdvertLiveTest do
     published_on: Date.to_string(Date.utc_today())
   }
 
-  defp create_advert(_) do
-    school = school_fixture()
-    class = class_fixture(%{school_id: school.id})
-    advert = advert_fixture(%{school_id: school.id, class_id: class.id})
-    %{advert: advert}
-  end
-
   describe "Index" do
-    setup [:create_advert]
-
     test "lists all adverts", %{conn: conn} do
       user = user_fixture()
       conn = log_in_user(conn, user)
@@ -48,10 +39,14 @@ defmodule AdmitWeb.AdvertLiveTest do
 
     test "saves new advert", %{conn: conn} do
       user = user_fixture()
-      school = school_fixture()
-      _class = class_fixture(%{school_id: school.id})
-      {:ok, _school} = Admit.Schools.add_admin(school.id, user.email)
       conn = log_in_user(conn, user)
+      school = school_fixture()
+      {:ok, school} = Admit.Schools.add_admin(school.id, user.email)
+      class = class_fixture(%{school_id: school.id})
+
+      create_attrs =
+        @create_attrs
+        |> Map.put(:class_id, class.id)
 
       {:ok, index_live, _html} = live(conn, Routes.advert_index_path(conn, :index))
 
@@ -62,11 +57,11 @@ defmodule AdmitWeb.AdvertLiveTest do
 
       assert index_live
              |> form("#advert-form", advert: @invalid_attrs)
-             |> render_change() =~ "is invalid"
+             |> render_change() =~ "can&#39;t be blank"
 
       {:ok, _, html} =
         index_live
-        |> form("#advert-form", advert: @create_attrs)
+        |> form("#advert-form", advert: create_attrs)
         |> render_submit()
         |> follow_redirect(conn, Routes.advert_index_path(conn, :index))
 
@@ -77,8 +72,8 @@ defmodule AdmitWeb.AdvertLiveTest do
     test "updates advert in listing", %{conn: conn} do
       user = user_fixture()
       school = school_fixture()
-      school = Admit.Schools.add_admin(school.id, user.email)
-      class = class_fixture(school_id: school.id)
+      {:ok, school} = Admit.Schools.add_admin(school.id, user.email)
+      class = class_fixture(%{school_id: school.id})
 
       advert = advert_fixture(%{school_id: school.id, class_id: class.id})
 
@@ -93,7 +88,7 @@ defmodule AdmitWeb.AdvertLiveTest do
 
       assert index_live
              |> form("#advert-form", advert: @invalid_attrs)
-             |> render_change() =~ "is invalid"
+             |> render_change() =~ "can&#39;t be blank"
 
       {:ok, _, html} =
         index_live
@@ -155,7 +150,7 @@ defmodule AdmitWeb.AdvertLiveTest do
 
       assert show_live
              |> form("#advert-form", advert: @invalid_attrs)
-             |> render_change() =~ "is invalid"
+             |> render_change() =~ "can&#39;t be blank"
 
       {:ok, _, html} =
         show_live

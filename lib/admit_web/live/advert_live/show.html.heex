@@ -7,6 +7,7 @@
       id={@advert.id}
       title={@page_title}
       action={@live_action}
+      list_classes={@list_classes}
       advert={@advert}
       return_to={Routes.advert_show_path(@socket, :show, @advert)}
     />
@@ -16,18 +17,23 @@
 <ul>
 
   <li>
-    <strong>Published on:</strong>
+    <strong>Published:</strong>
     <%= @advert.published_on %>
   </li>
 
   <li>
-    <strong>Deadline:</strong>
-    <%= @advert.deadline %>
+    <strong>Class:</strong>
+    <%= @advert.class.name %>
   </li>
 
   <li>
     <strong>Description:</strong>
     <%= @advert.description %>
+  </li>
+
+  <li>
+    <strong>Deadline:</strong>
+    <%= @advert.deadline %>
   </li>
 
 </ul>

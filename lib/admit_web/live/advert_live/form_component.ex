@@ -2,6 +2,7 @@ defmodule AdmitWeb.AdvertLive.FormComponent do
   use AdmitWeb, :live_component
 
   alias Admit.Adverts
+  alias Admit.Repo
 
   @impl true
   def update(%{advert: advert} = assigns, socket) do
@@ -30,6 +31,7 @@ defmodule AdmitWeb.AdvertLive.FormComponent do
   defp save_advert(socket, :edit, advert_params) do
     case Adverts.update_advert(socket.assigns.advert, advert_params) do
       {:ok, advert} ->
+        advert = Repo.preload(advert, [:school, :class])
         AdmitWeb.Endpoint.broadcast_from(self(), "adverts", "update_advert", advert)
 
         {:noreply,
@@ -47,7 +49,8 @@ defmodule AdmitWeb.AdvertLive.FormComponent do
 
     case Adverts.create_advert(advert_params) do
       {:ok, advert} ->
-        AdmitWeb.Endpoint.broadcast_from(self(), "adverts", "create_advert", advert)
+        advert = Repo.preload(advert, [:school, :class])
+        AdmitWeb.Endpoint.broadcast("adverts", "create_advert", advert)
 
         {:noreply,
          socket
