@@ -1,0 +1,42 @@
+<h1>Show Advert</h1>
+
+<%= if @live_action in [:edit] do %>
+  <.modal return_to={Routes.advert_show_path(@socket, :show, @advert)}>
+    <.live_component
+      module={AdmitWeb.AdvertLive.FormComponent}
+      id={@advert.id}
+      title={@page_title}
+      action={@live_action}
+      list_classes={@list_classes}
+      advert={@advert}
+      return_to={Routes.advert_show_path(@socket, :show, @advert)}
+    />
+  </.modal>
+<% end %>
+
+<ul>
+
+  <li>
+    <strong>Published:</strong>
+    <%= @advert.published_on %>
+  </li>
+
+  <li>
+    <strong>Class:</strong>
+    <%= @advert.class.name %>
+  </li>
+
+  <li>
+    <strong>Description:</strong>
+    <%= @advert.description %>
+  </li>
+
+  <li>
+    <strong>Deadline:</strong>
+    <%= @advert.deadline %>
+  </li>
+
+</ul>
+
+<span><%= live_patch "Edit", to: Routes.advert_show_path(@socket, :edit, @advert), class: "button" %></span> |
+<span><%= live_redirect "Back", to: Routes.advert_index_path(@socket, :index) %></span>

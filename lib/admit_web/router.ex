@@ -34,6 +34,17 @@ defmodule AdmitWeb.Router do
     resources "/classes", ClassController
   end
 
+  scope "/", AdmitWeb do
+    pipe_through [:browser, :require_authenticated_user]
+
+    live "/adverts", AdvertLive.Index, :index
+    live "/adverts/new", AdvertLive.Index, :new
+    live "/adverts/:id/edit", AdvertLive.Index, :edit
+
+    live "/adverts/:id", AdvertLive.Show, :show
+    live "/adverts/:id/show/edit", AdvertLive.Show, :edit
+  end
+
   # Other scopes may use custom stacks.
   # scope "/api", AdmitWeb do
   #   pipe_through :api
