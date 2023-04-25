@@ -43,6 +43,13 @@ defmodule AdmitWeb.Router do
 
     live "/adverts/:id", AdvertLive.Show, :show
     live "/adverts/:id/show/edit", AdvertLive.Show, :edit
+
+    live "/applications", ApplicationLive.Index, :index
+    live "/applications/new", ApplicationLive.Index, :new
+    live "/applications/:id/edit", ApplicationLive.Index, :edit
+
+    live "/applications/:id", ApplicationLive.Show, :show
+    live "/applications/:id/show/edit", ApplicationLive.Show, :edit
   end
 
   # Other scopes may use custom stacks.

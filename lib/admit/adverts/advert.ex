@@ -11,6 +11,7 @@ defmodule Admit.Adverts.Advert do
     field :published_on, :date
     belongs_to :school, Admit.Schools.School
     belongs_to :class, Admit.Classes.Class
+    has_many :applications, Admit.Applications.Application
 
     timestamps()
   end

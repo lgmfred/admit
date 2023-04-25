@@ -14,6 +14,7 @@ defmodule Admit.Schools.School do
     has_many :admins, Admit.Accounts.User, on_replace: :delete
     has_many :classes, Admit.Classes.Class
     has_many :adverts, Admit.Adverts.Advert
+    has_many :applications, Admit.Applications.Application
 
     timestamps()
   end
