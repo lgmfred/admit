@@ -20,7 +20,27 @@ defmodule Admit.Applications.Application do
   @doc false
   def changeset(application, attrs) do
     application
-    |> cast(attrs, [:submitted_on, :status, :documents])
-    |> validate_required([:submitted_on, :status, :documents])
+    |> cast(attrs, [
+      :submitted_on,
+      :status,
+      :documents,
+      :advert_id,
+      :user_id,
+      :student_id,
+      :school_id
+    ])
+    |> validate_required([
+      :submitted_on,
+      :status,
+      :documents,
+      :advert_id,
+      :user_id,
+      :student_id,
+      :school_id
+    ])
+    |> foreign_key_constraint(:advert_id)
+    |> foreign_key_constraint(:user_id)
+    |> foreign_key_constraint(:student_id)
+    |> foreign_key_constraint(:school_id)
   end
 end

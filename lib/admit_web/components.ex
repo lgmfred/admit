@@ -28,7 +28,7 @@ defmodule AdmitWeb.Components do
         <ul class="inline-flex px-4 rounded-2xl">
           <.nav_links href="/adverts"><i class="fa fa-fw fa-home"></i></.nav_links>
           <.nav_links href="/schools">Schools</.nav_links>
-          <.nav_links href="/admission">Admission</.nav_links>
+          <.nav_links href="/applications">Applications</.nav_links>
           <.nav_links href="/students">Student</.nav_links>
           <.nav_links href="/users/settings">Account</.nav_links>
           <.nav_links href="/icon_link"><i class="fa fa-fw fa-search"></i></.nav_links>

@@ -1,11 +1,26 @@
 defmodule AdmitWeb.ApplicationLive.Show do
   use AdmitWeb, :live_view
 
+  alias Admit.Accounts
+  alias Admit.Adverts
   alias Admit.Applications
 
   @impl true
-  def mount(_params, _session, socket) do
-    {:ok, socket}
+  def mount(params, session, socket) do
+    user = Accounts.get_user_by_session_token(session["user_token"])
+    advert_id = params["advert_id"]
+
+    advert =
+      if advert_id do
+        Adverts.get_advert!(advert_id)
+      else
+        advert_id
+      end
+
+    {:ok,
+     socket
+     |> assign(:user, user)
+     |> assign(:advert, advert)}
   end
 
   @impl true

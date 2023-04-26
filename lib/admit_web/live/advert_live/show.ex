@@ -18,10 +18,12 @@ defmodule AdmitWeb.AdvertLive.Show do
       Adverts.list_adverts()
       |> Repo.preload([:school, :class])
 
+    list_classes = if user.id, do: [], else: Index.list_classes(user.school_id)
+
     {:ok,
      socket
      |> assign(:user, user)
-     |> assign(:list_classes, Index.list_classes(user.school_id))
+     |> assign(:list_classes, list_classes)
      |> assign(:adverts, adverts)}
   end
 

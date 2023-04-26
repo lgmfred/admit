@@ -2,8 +2,16 @@ defmodule AdmitWeb.ApplicationLiveTest do
   use AdmitWeb.ConnCase
 
   import Phoenix.LiveViewTest
+
+  alias Admit.Schools
+
   import Admit.ApplicationsFixtures
   import Admit.AccountsFixtures
+  import Admit.SchoolsFixtures
+  import Admit.ClassesFixtures
+  import Admit.StudentsFixtures
+  import Admit.AdvertsFixtures
+  import Admit.AdvertsFixtures
 
   @create_attrs %{
     documents: "some documents",
@@ -66,7 +74,19 @@ defmodule AdmitWeb.ApplicationLiveTest do
     test "updates application in listing", %{conn: conn} do
       user = user_fixture()
       conn = log_in_user(conn, user)
-      application = application_fixture()
+      school = school_fixture()
+      class = class_fixture(%{school_id: school.id})
+      student = school_fixture(%{user_id: user.id})
+      advert = advert_fixture(%{school_id: school.id, class_id: class.id})
+
+      application =
+        application_fixture(%{
+          school_id: school.id,
+          user_id: user.id,
+          class_id: class.id,
+          student_id: student.id,
+          advert_id: advert.id
+        })
 
       {:ok, index_live, _html} = live(conn, Routes.application_index_path(conn, :index))
 
@@ -117,8 +137,19 @@ defmodule AdmitWeb.ApplicationLiveTest do
 
     test "updates application within modal", %{conn: conn} do
       user = user_fixture()
-      conn = log_in_user(conn, user)
-      application = application_fixture()
+      school = school_fixture()
+      {:ok, school} = Schools.add_admin(school.id, user.email)
+      class = class_fixture(%{school_id: school.id})
+      student = student_fixture(%{user_id: user.id})
+      advert = advert_fixture(%{school_id: school.id, class_id: class.id})
+
+      application =
+        application_fixture(%{
+          user_id: user.id,
+          advert_id: advert.id,
+          school_id: school.id,
+          student_id: student.id
+        })
 
       {:ok, show_live, _html} = live(conn, Routes.application_show_path(conn, :show, application))
 

@@ -7,16 +7,13 @@
     id="application-form"
     phx-target={@myself}
     phx-change="validate"
-    phx-submit="save">
-  
-    <%= label f, :submitted_on %>
-    <%= datetime_select f, :submitted_on %>
-    <%= error_tag f, :submitted_on %>
-  
-    <%= label f, :status %>
-    <%= text_input f, :status %>
-    <%= error_tag f, :status %>
-  
+    phx-submit="save"
+    >
+
+    <%= label f, :student %>
+    <%= select f, :student_id, @students, prompt: "Select student" %>
+    <%= error_tag f, :student_id %>
+
     <%= label f, :documents %>
     <%= text_input f, :documents %>
     <%= error_tag f, :documents %>

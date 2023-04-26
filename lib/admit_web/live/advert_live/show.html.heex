@@ -14,6 +14,8 @@
   </.modal>
 <% end %>
 
+<%= live_redirect "Apply", to: Routes.application_index_path(@socket, :new, advert_id: @advert.id) %>
+
 <ul>
 
   <li>

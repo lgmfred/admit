@@ -3,13 +3,13 @@ defmodule Admit.Repo.Migrations.CreateApplications do
 
   def change do
     create table(:applications) do
-      add :submitted_on, :naive_datetime
-      add :status, :string
-      add :documents, :string
-      add :advert_id, references(:adverts, on_delete: :nothing)
-      add :user_id, references(:users, on_delete: :nothing)
-      add :student_id, references(:students, on_delete: :nothing)
-      add :school_id, references(:schools, on_delete: :nothing)
+      add :submitted_on, :naive_datetime, null: false
+      add :status, :string, null: false
+      add :documents, :string, null: false
+      add :advert_id, references(:adverts, on_delete: :nothing), null: false
+      add :user_id, references(:users, on_delete: :nothing), null: false
+      add :student_id, references(:students, on_delete: :nothing), null: false
+      add :school_id, references(:schools, on_delete: :nothing), null: false
 
       timestamps()
     end

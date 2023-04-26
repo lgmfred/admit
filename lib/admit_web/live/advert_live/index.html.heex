@@ -46,4 +46,6 @@
   </tbody>
 </table>
 
-<span class="my-4"><%= live_patch "New Advert", to: Routes.advert_index_path(@socket, :new) %></span>
+<%= if @user.school_id  do %>
+  <span class="my-4"><%= live_patch "New Advert", to: Routes.advert_index_path(@socket, :new) %></span>
+<% end %>
