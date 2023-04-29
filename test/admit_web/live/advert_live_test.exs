@@ -1,6 +1,8 @@
 defmodule AdmitWeb.AdvertLiveTest do
   use AdmitWeb.ConnCase
 
+  alias Admit.Schools
+
   import Phoenix.LiveViewTest
   import Admit.AdvertsFixtures
   import Admit.AccountsFixtures
@@ -71,6 +73,7 @@ defmodule AdmitWeb.AdvertLiveTest do
 
     test "updates advert in listing", %{conn: conn} do
       user = user_fixture()
+      conn = log_in_user(conn, user)
       school = school_fixture()
       {:ok, school} = Admit.Schools.add_admin(school.id, user.email)
       class = class_fixture(%{school_id: school.id})
@@ -137,7 +140,7 @@ defmodule AdmitWeb.AdvertLiveTest do
       user = user_fixture()
       conn = log_in_user(conn, user)
       school = school_fixture()
-      {:ok, school} = Admit.Schools.add_admin(school.id, user.email)
+      {:ok, school} = Schools.add_admin(school.id, user.email)
       class = class_fixture(%{school_id: school.id})
       advert = advert_fixture(%{school_id: school.id, class_id: class.id})
 

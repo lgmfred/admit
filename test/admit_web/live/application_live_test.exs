@@ -15,30 +15,34 @@ defmodule AdmitWeb.ApplicationLiveTest do
 
   @create_attrs %{
     documents: "some documents",
-    status: "some status",
-    submitted_on: %{day: 23, hour: 21, minute: 32, month: 4, year: 2023}
+    status: "submitted"
   }
   @update_attrs %{
     documents: "some updated documents",
-    status: "some updated status",
-    submitted_on: %{day: 24, hour: 21, minute: 32, month: 4, year: 2023}
+    status: "review"
   }
   @invalid_attrs %{
     documents: nil,
-    status: nil,
-    submitted_on: %{day: 30, hour: 21, minute: 32, month: 2, year: 2023}
+    status: nil
   }
-
-  defp create_application(_) do
-    application = application_fixture()
-    %{application: application}
-  end
 
   describe "Index" do
     test "lists all applications", %{conn: conn} do
       user = user_fixture()
       conn = log_in_user(conn, user)
-      application = application_fixture()
+      student = student_fixture(%{user_id: user.id})
+      school = school_fixture()
+      class = class_fixture(%{school_id: school.id})
+      advert = advert_fixture(%{school_id: school.id, class_id: class.id})
+
+      application =
+        application_fixture(%{
+          advert_id: advert.id,
+          user_id: user.id,
+          student_id: student.id,
+          school_id: school.id,
+          class_id: class.id
+        })
 
       {:ok, _index_live, html} = live(conn, Routes.application_index_path(conn, :index))
 
@@ -49,6 +53,20 @@ defmodule AdmitWeb.ApplicationLiveTest do
     test "saves new application", %{conn: conn} do
       user = user_fixture()
       conn = log_in_user(conn, user)
+      student = student_fixture(%{user_id: user.id})
+      school = school_fixture()
+      class = class_fixture(%{school_id: school.id})
+
+      advert = advert_fixture(%{school_id: school.id, class_id: class.id})
+
+      application =
+        application_fixture(%{
+          user_id: user.id,
+          advert_id: advert.id,
+          school_id: school.id,
+          student_id: student.id,
+          class_id: class.id
+        })
 
       {:ok, index_live, _html} = live(conn, Routes.application_index_path(conn, :index))
 
@@ -76,7 +94,7 @@ defmodule AdmitWeb.ApplicationLiveTest do
       conn = log_in_user(conn, user)
       school = school_fixture()
       class = class_fixture(%{school_id: school.id})
-      student = school_fixture(%{user_id: user.id})
+      student = student_fixture(%{user_id: user.id})
       advert = advert_fixture(%{school_id: school.id, class_id: class.id})
 
       application =
@@ -97,7 +115,7 @@ defmodule AdmitWeb.ApplicationLiveTest do
 
       assert index_live
              |> form("#application-form", application: @invalid_attrs)
-             |> render_change() =~ "is invalid"
+             |> render_change() =~ "can&#39;t be blank"
 
       {:ok, _, html} =
         index_live
@@ -112,7 +130,20 @@ defmodule AdmitWeb.ApplicationLiveTest do
     test "deletes application in listing", %{conn: conn} do
       user = user_fixture()
       conn = log_in_user(conn, user)
-      application = application_fixture()
+      school = school_fixture()
+      {:ok, school} = Schools.add_admin(school.id, user.email)
+      class = class_fixture(%{school_id: school.id})
+      student = student_fixture(%{user_id: user.id})
+      advert = advert_fixture(%{school_id: school.id, class_id: class.id})
+
+      application =
+        application_fixture(%{
+          school_id: school.id,
+          user_id: user.id,
+          class_id: class.id,
+          student_id: student.id,
+          advert_id: advert.id
+        })
 
       {:ok, index_live, _html} = live(conn, Routes.application_index_path(conn, :index))
 
@@ -122,12 +153,23 @@ defmodule AdmitWeb.ApplicationLiveTest do
   end
 
   describe "Show" do
-    setup [:create_application]
-
     test "displays application", %{conn: conn} do
       user = user_fixture()
       conn = log_in_user(conn, user)
-      application = application_fixture()
+      school = school_fixture()
+      {:ok, school} = Schools.add_admin(school.id, user.email)
+      class = class_fixture(%{school_id: school.id})
+      student = student_fixture(%{user_id: user.id})
+      advert = advert_fixture(%{school_id: school.id, class_id: class.id})
+
+      application =
+        application_fixture(%{
+          school_id: school.id,
+          user_id: user.id,
+          class_id: class.id,
+          student_id: student.id,
+          advert_id: advert.id
+        })
 
       {:ok, _show_live, html} = live(conn, Routes.application_show_path(conn, :show, application))
 
@@ -137,6 +179,7 @@ defmodule AdmitWeb.ApplicationLiveTest do
 
     test "updates application within modal", %{conn: conn} do
       user = user_fixture()
+      conn = log_in_user(conn, user)
       school = school_fixture()
       {:ok, school} = Schools.add_admin(school.id, user.email)
       class = class_fixture(%{school_id: school.id})
@@ -160,7 +203,7 @@ defmodule AdmitWeb.ApplicationLiveTest do
 
       assert show_live
              |> form("#application-form", application: @invalid_attrs)
-             |> render_change() =~ "is invalid"
+             |> render_change() =~ "can&#39;t be blank"
 
       {:ok, _, html} =
         show_live

@@ -10,6 +10,9 @@
       application={@application}
       return_to={Routes.application_show_path(@socket, :show, @application)}
       user={@user}
+      students={@students}
+      editing={@editing}
+      status_options={@status_options}
     />
   </.modal>
 <% end %>

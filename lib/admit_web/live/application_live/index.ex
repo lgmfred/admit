@@ -39,12 +39,16 @@ defmodule AdmitWeb.ApplicationLive.Index do
   defp apply_action(socket, :edit, %{"id" => id}) do
     socket
     |> assign(:page_title, "Edit Application")
+    |> assign(:editing, true)
+    |> assign(:status_options, status_options())
     |> assign(:application, Applications.get_application!(id))
   end
 
   defp apply_action(socket, :new, _params) do
     socket
     |> assign(:page_title, "New Application")
+    |> assign(:editing, false)
+    |> assign(:status_options, status_options())
     |> assign(:application, %Application{})
   end
 
@@ -103,5 +107,15 @@ defmodule AdmitWeb.ApplicationLive.Index do
   def list_students(user_id) do
     Admit.Students.list_students(user_id)
     |> Enum.map(fn student -> {student.name, student.id} end)
+  end
+
+  def status_options do
+    [
+      Submitted: "submitted",
+      Review: "review",
+      Interview: "interview",
+      Accepted: "accepted",
+      Rejected: "rejected"
+    ]
   end
 end

@@ -2,14 +2,45 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
-/* This file is for your main application CSS */
+/* Custom CSS for Admit DYA Capstone */
 
 body {
   @apply flex flex-col min-h-screen antialiased relative bg-slate-200 font-mono;
 }
 
+nav {
+  @apply flex justify-center;
+}
+
+nav ul {
+  @apply flex items-center justify-between gap-1;
+}
+
+nav ul li {
+  @apply text-base text-slate-700;
+}
+
+nav ul li a {
+  @apply text-lg text-gray-800 px-4 py-1.5 font-extrabold
+}
+nav ul li a:hover {
+  @apply hover:bg-gray-800 hover:text-white;
+}
+
 main {
   @apply max-w-6xl mx-auto py-6 px-4 sm:px-6 lg:px-8;
+}
+
+h1 {
+  @apply text-center text-slate-900 font-extrabold text-3xl;
+}
+
+h2 {
+  @apply text-center text-slate-800 font-extrabold text-2xl;
+}
+
+h3 {
+  @apply text-center text-slate-800 font-bold text-xl;
 }
 
 
@@ -103,6 +134,176 @@ form[id="email_form"] + p,
 form[id="password_form"] + p {
   @apply text-center;
 }
+
+
+/* Adverts */
+
+#adverts {
+  @apply mt-8  mx-auto;
+}
+#adverts .wrapper {
+  @apply mb-4 align-middle inline-block min-w-full shadow overflow-hidden rounded-lg border-b border-slate-300;
+}
+#adverts a {
+  @apply underline text-indigo-500 font-semibold;
+}
+#adverts .eat-soon {
+  @apply px-4 py-2 text-base font-medium bg-red-200 text-red-800 rounded-full;
+}
+#adverts table {
+  @apply min-w-full table-fixed;
+}
+#adverts table th {
+  @apply bg-transparent px-2 py-1 border-b border-slate-300 bg-indigo-700 text-base font-medium uppercase tracking-wider text-center text-white;
+}
+#adverts table th a {
+  @apply no-underline text-white;
+}
+#adverts table td {
+  @apply px-2 py-1 whitespace-nowrap border-b border-slate-300 text-lg font-medium text-slate-900 text-center;
+}
+#adverts table tbody {
+  @apply bg-white;
+}
+#adverts table th.item {
+  @apply pl-12 text-left;
+}
+#adverts table td.item {
+  @apply pl-12 font-semibold text-left w-2/5;
+}
+#adverts table td.quantity {
+  @apply w-1/5;
+}
+#adverts table td.expires {
+  @apply w-2/5;
+}
+#adverts table td .id {
+  @apply text-slate-400 -ml-8 mr-4 text-base tabular-nums inline-block w-6;
+}
+#adverts table td .emoji {
+  @apply mr-1;
+}
+#adverts .footer {
+  @apply text-center bg-white max-w-4xl mx-auto text-lg py-8;
+}
+#adverts .footer .pagination {
+  @apply inline-flex shadow-sm;
+}
+#adverts .footer a {
+  @apply -ml-px inline-flex items-center px-3 py-2 border border-slate-300 bg-white text-base font-medium text-slate-600 no-underline;
+}
+#adverts .footer a:hover {
+  @apply bg-slate-300;
+}
+#adverts .footer a.active {
+  @apply bg-indigo-700 text-white;
+}
+#adverts .footer a:first-child {
+  @apply rounded-l-md;
+}
+#adverts .footer a:last-child {
+  @apply rounded-r-md;
+}
+#adverts .footer a.previous {
+  @apply rounded-l-md;
+}
+#adverts .footer a.next {
+  @apply rounded-r-md;
+}
+#adverts form {
+  @apply flex items-center justify-end mb-4;
+}
+#adverts form select {
+  @apply appearance-none bg-slate-200 border border-slate-400 text-slate-700 py-0 pr-7 mr-2 h-8 rounded-lg font-semibold cursor-pointer text-sm mx-1;
+}
+#adverts form select:focus {
+  @apply outline-none bg-slate-200 border-slate-500;
+}
+
+/* Applications */
+
+#applications {
+  @apply mt-8  mx-auto;
+}
+#applications .wrapper {
+  @apply mb-4 align-middle inline-block min-w-full shadow overflow-hidden rounded-lg border-b border-slate-300;
+}
+#applications a {
+  @apply underline text-indigo-500 font-semibold;
+}
+#applications .eat-soon {
+  @apply px-4 py-2 text-base font-medium bg-red-200 text-red-800 rounded-full;
+}
+#applications table {
+  @apply min-w-full table-fixed;
+}
+#applications table th {
+  @apply bg-transparent px-2 py-1 border-b border-slate-300 bg-indigo-700 text-base font-medium uppercase tracking-wider text-center text-white;
+}
+#applapplicationsications table th a {
+  @apply no-underline text-white;
+}
+#applications table td {
+  @apply px-2 py-1 whitespace-nowrap border-b border-slate-300 text-lg font-medium text-slate-900 text-center;
+}
+#applications table tbody {
+  @apply bg-white;
+}
+#applications table th.item {
+  @apply pl-12 text-left;
+}
+#applications table td.item {
+  @apply pl-12 font-semibold text-left w-2/5;
+}
+#applications table td.quantity {
+  @apply w-1/5;
+}
+#applications table td.expires {
+  @apply w-2/5;
+}
+#applications table td .id {
+  @apply text-slate-400 -ml-8 mr-4 text-base tabular-nums inline-block w-6;
+}
+#applications table td .emoji {
+  @apply mr-1;
+}
+#applications .footer {
+  @apply text-center bg-white max-w-4xl mx-auto text-lg py-8;
+}
+#applications .footer .pagination {
+  @apply inline-flex shadow-sm;
+}
+#applications .footer a {
+  @apply -ml-px inline-flex items-center px-3 py-2 border border-slate-300 bg-white text-base font-medium text-slate-600 no-underline;
+}
+#applications .footer a:hover {
+  @apply bg-slate-300;
+}
+#applications .footer a.active {
+  @apply bg-indigo-700 text-white;
+}
+#applications .footer a:first-child {
+  @apply rounded-l-md;
+}
+#applications .footer a:last-child {
+  @apply rounded-r-md;
+}
+#applications .footer a.previous {
+  @apply rounded-l-md;
+}
+#applications .footer a.next {
+  @apply rounded-r-md;
+}
+#applications form {
+  @apply flex items-center justify-end mb-4;
+}
+#applications form select {
+  @apply appearance-none bg-slate-200 border border-slate-400 text-slate-700 py-0 pr-7 mr-2 h-8 rounded-lg font-semibold cursor-pointer text-sm mx-1;
+}
+#applications form select:focus {
+  @apply outline-none bg-slate-200 border-slate-500;
+}
+
 
 /* Alerts and form errors used by phx.new */
 .alert {

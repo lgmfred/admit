@@ -28,6 +28,8 @@ defmodule AdmitWeb.SchoolControllerTest do
 
   describe "index" do
     test "lists all schools", %{conn: conn} do
+      user = user_fixture()
+      conn = log_in_user(conn, user)
       conn = get(conn, Routes.school_path(conn, :index))
       assert html_response(conn, 200) =~ "Listing Schools"
     end

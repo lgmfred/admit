@@ -12,7 +12,7 @@ defmodule Admit.ApplicationsFixtures do
       attrs
       |> Enum.into(%{
         documents: "some documents",
-        status: "some status",
+        status: "submitted",
         submitted_on: ~N[2023-04-23 21:32:00]
       })
       |> Admit.Applications.create_application()

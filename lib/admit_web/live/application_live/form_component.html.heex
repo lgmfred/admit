@@ -14,6 +14,12 @@
     <%= select f, :student_id, @students, prompt: "Select student" %>
     <%= error_tag f, :student_id %>
 
+    <%= if @editing do %>
+      <%= label f, :status %>
+      <%= select f, :status, @status_options, prompt: @application.status %>
+      <%= error_tag f, :status %>
+    <% end %>
+
     <%= label f, :documents %>
     <%= text_input f, :documents %>
     <%= error_tag f, :documents %>

@@ -20,18 +20,10 @@ defmodule AdmitWeb.Router do
   scope "/", AdmitWeb do
     pipe_through [:browser, :require_authenticated_user]
 
-    resources "/students", StudentController
-    resources "/schools", SchoolController, except: [:index, :show]
-  end
-
-  scope "/", AdmitWeb do
-    pipe_through :browser
-
     get "/", PageController, :index
-    get "/home", HomeController, :home
-    resources "/schools", SchoolController, only: [:index, :show]
-    resources "/school_admins", SchoolAdminController
+    resources "/schools", SchoolController
     resources "/classes", ClassController
+    resources "/students", StudentController
   end
 
   scope "/", AdmitWeb do

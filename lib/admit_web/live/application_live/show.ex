@@ -4,10 +4,12 @@ defmodule AdmitWeb.ApplicationLive.Show do
   alias Admit.Accounts
   alias Admit.Adverts
   alias Admit.Applications
+  alias AdmitWeb.ApplicationLive.Index
 
   @impl true
   def mount(params, session, socket) do
     user = Accounts.get_user_by_session_token(session["user_token"])
+    students = Index.list_students(user.id)
     advert_id = params["advert_id"]
 
     advert =
@@ -20,6 +22,7 @@ defmodule AdmitWeb.ApplicationLive.Show do
     {:ok,
      socket
      |> assign(:user, user)
+     |> assign(:students, students)
      |> assign(:advert, advert)}
   end
 
@@ -28,6 +31,8 @@ defmodule AdmitWeb.ApplicationLive.Show do
     {:noreply,
      socket
      |> assign(:page_title, page_title(socket.assigns.live_action))
+     |> assign(:editing, true)
+     |> assign(:status_options, Index.status_options())
      |> assign(:application, Applications.get_application!(id))}
   end
 
