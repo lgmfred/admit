@@ -20,11 +20,10 @@
   <table>
     <thead >
       <tr >
-        <th class="item">Published</th>
-        <th >School</th>
-        <th >Class</th>
-        <th >Description</th>
-        <th >Deadline</th>
+        <th class="item">School</th>
+        <th>Level</th>
+        <th>Class</th>
+        <th>Days Left</th>
 
         <th></th>
       </tr>
@@ -32,26 +31,36 @@
     <tbody>
       <%= for advert <- @adverts do %>
         <tr id={"advert-#{advert.id}"}>
-          <td><%= advert.published_on %></td>
-          <td><%= advert.school.name %></td>
+          <td class="item">
+            <span class="id"><%= advert.id %></span>
+            <%= advert.school.name %>
+          </td>
+          <td><%= advert.school.level %></td>
           <td><%= advert.class.name %></td>
-          <td><%= advert.description %></td>
-          <td><%= advert.deadline %></td>
+          <td calss="deadline">
+            <span class={
+              if Date.diff(advert.deadline, advert.inserted_at) <= 5, do: "apply-soon"
+              }>
+              <%= Date.diff(advert.deadline, advert.inserted_at) %>
+            </span>
+          </td>
 
           <td>
             <span><%= live_redirect "Show", to: Routes.advert_show_path(@socket, :show, advert) %></span>
-            <span><%= live_patch "Edit", to: Routes.advert_index_path(@socket, :edit, advert) %></span>
-            <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: advert.id, data: [confirm: "Are you sure?"] %></span>
+            <%= if @user.school_id do %>
+              <span><%= live_patch "Edit", to: Routes.advert_index_path(@socket, :edit, advert) %></span>
+              <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: advert.id, data: [confirm: "Are you sure?"] %></span>
+            <% end %>
           </td>
         </tr>
       <% end %>
     </tbody>
   </table>
 
+  </div>
   <%= if @user.school_id  do %>
     <span class="my-4"><%= live_patch "New Advert", to: Routes.advert_index_path(@socket, :new) %></span>
   <% end %>
-  </div>
 </div>
 
 

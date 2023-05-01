@@ -23,9 +23,11 @@
     <table>
       <thead>
         <tr>
-          <th class="item">Submitted on</th>
+          <th class="item">Submitted</th>
           <th>Status</th>
-          <th>Documents</th>
+          <th>School</th>
+          <th>Class</th>
+          <th>Student</th>
 
           <th></th>
         </tr>
@@ -33,9 +35,14 @@
       <tbody id="applications">
         <%= for application <- @applications do %>
           <tr id={"application-#{application.id}"}>
-            <td><%= application.submitted_on %></td>
+            <td class="item">
+              <span class="id"><%= application.id %></span>
+              <%= NaiveDateTime.to_date(application.submitted_on) %>
+            </td>
             <td><%= application.status %></td>
-            <td><%= application.documents %></td>
+            <td><%= application.school.name %></td>
+            <td><%= application.advert.class.name%></td>
+            <td><%= application.student.name %></td>
 
             <td>
               <span><%= live_redirect "Show", to: Routes.application_show_path(@socket, :show, application) %></span>

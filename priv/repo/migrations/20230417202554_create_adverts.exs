@@ -3,7 +3,6 @@ defmodule Admit.Repo.Migrations.CreateAdverts do
 
   def change do
     create table(:adverts) do
-      add :published_on, :date
       add :deadline, :date
       add :description, :text
       add :school_id, references(:schools, on_delete: :nothing)

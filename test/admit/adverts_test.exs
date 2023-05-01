@@ -10,7 +10,7 @@ defmodule Admit.AdvertsTest do
     import Admit.SchoolsFixtures
     import Admit.ClassesFixtures
 
-    @invalid_attrs %{deadline: nil, description: nil, published_on: nil}
+    @invalid_attrs %{deadline: nil, description: nil}
 
     test "list_adverts/0 returns all adverts" do
       school = school_fixture()
@@ -30,8 +30,7 @@ defmodule Admit.AdvertsTest do
     test "create_advert/1 with valid data creates a advert" do
       valid_attrs = %{
         deadline: ~D[2023-04-16],
-        description: "some description",
-        published_on: ~D[2023-04-16]
+        description: "some description"
       }
 
       school = school_fixture()
@@ -45,7 +44,6 @@ defmodule Admit.AdvertsTest do
       assert {:ok, %Advert{} = advert} = Adverts.create_advert(valid_attrs)
       assert advert.deadline == ~D[2023-04-16]
       assert advert.description == "some description"
-      assert advert.published_on == ~D[2023-04-16]
     end
 
     test "create_advert/1 with invalid data returns error changeset" do
@@ -59,14 +57,12 @@ defmodule Admit.AdvertsTest do
 
       update_attrs = %{
         deadline: ~D[2023-04-17],
-        description: "some updated description",
-        published_on: ~D[2023-04-17]
+        description: "some updated description"
       }
 
       assert {:ok, %Advert{} = advert} = Adverts.update_advert(advert, update_attrs)
       assert advert.deadline == ~D[2023-04-17]
       assert advert.description == "some updated description"
-      assert advert.published_on == ~D[2023-04-17]
     end
 
     test "update_advert/2 with invalid data returns error changeset" do

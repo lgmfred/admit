@@ -8,7 +8,6 @@ defmodule Admit.Adverts.Advert do
   schema "adverts" do
     field :deadline, :date
     field :description, :string
-    field :published_on, :date
     belongs_to :school, Admit.Schools.School
     belongs_to :class, Admit.Classes.Class
     has_many :applications, Admit.Applications.Application
@@ -19,8 +18,8 @@ defmodule Admit.Adverts.Advert do
   @doc false
   def changeset(advert, attrs) do
     advert
-    |> cast(attrs, [:published_on, :deadline, :description, :school_id, :class_id])
-    |> validate_required([:published_on, :deadline, :description, :school_id, :class_id])
+    |> cast(attrs, [:deadline, :description, :school_id, :class_id])
+    |> validate_required([:deadline, :description, :school_id, :class_id])
     |> foreign_key_constraint(:school_id)
     |> foreign_key_constraint(:class_id)
   end

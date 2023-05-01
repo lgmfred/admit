@@ -5,6 +5,7 @@ defmodule AdmitWeb.ApplicationLive.Index do
   alias Admit.Adverts
   alias Admit.Applications
   alias Admit.Applications.Application
+  alias Admit.Repo
 
   ## For redirection from show adverts
   @impl true
@@ -102,6 +103,7 @@ defmodule AdmitWeb.ApplicationLive.Index do
 
   defp list_applications do
     Applications.list_applications()
+    |> Repo.preload([:student, :school, advert: [:class]])
   end
 
   def list_students(user_id) do

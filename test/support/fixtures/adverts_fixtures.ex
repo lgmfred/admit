@@ -11,9 +11,8 @@ defmodule Admit.AdvertsFixtures do
     {:ok, advert} =
       attrs
       |> Enum.into(%{
-        deadline: ~D[2023-04-16],
-        description: "some description",
-        published_on: ~D[2023-04-16]
+        deadline: Date.add(Date.utc_today(), 42),
+        description: "some description"
       })
       |> Admit.Adverts.create_advert()
 

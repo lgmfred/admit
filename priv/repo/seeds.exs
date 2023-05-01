@@ -19,7 +19,7 @@ alias Admit.Schools.School
 alias Admit.Students
 alias Admit.Students.Student
 
-levels = ["Nursery", "Primary", "Secondary"]
+levels = ["nursery", "primary", "secondary"]
 
 classes = %{
   "Nursery" => ["Baby", "Middle", "Top"],

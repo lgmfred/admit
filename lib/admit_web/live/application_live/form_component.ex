@@ -43,12 +43,10 @@ defmodule AdmitWeb.ApplicationLive.FormComponent do
   end
 
   defp save_application(socket, :new, application_params) do
-    submitted_on = DateTime.utc_now() |> DateTime.to_naive()
     default_status = "submitted"
 
     application_params =
       application_params
-      |> Map.put("submitted_on", submitted_on)
       |> Map.put("status", default_status)
       |> Map.put("user_id", socket.assigns.user.id)
       |> Map.put("advert_id", socket.assigns.advert.id)
