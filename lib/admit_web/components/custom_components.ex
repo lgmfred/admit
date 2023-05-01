@@ -1,7 +1,9 @@
-defmodule AdmitWeb.Components do
+defmodule AdmitWeb.CustomComponents do
   @moduledoc false
 
   use Phoenix.Component
+  import Phoenix.HTML.Link
+  alias AdmitWeb.Router.Helpers, as: Routes
 
   def page_header(assigns) do
     ~H"""
@@ -16,7 +18,18 @@ defmodule AdmitWeb.Components do
     ~H"""
     <section class="shadow-lg my-0 mx-auto max-h-12 block bg-gray-400/75 text-center pb-0.5">
       <a href="#" class="font-mono"><img src="/images/admit.png" /></a>
-      <%!-- <%= render "_user_menu.html", assigns %> --%>
+      <%= if @current_user do %>
+        <%= if @current_user.school_id do%>
+          <label class="inline-table text-blue-600 text-center font-bold text-base uppercase"><%= Admit.Schools.get_school!(@current_user.school_id).name %></label>
+        <% else %>
+          <label class="inline-table text-blue-600 text-center font-bold text-base uppercase">ADMISSION MANAGEMENT SYSTEM</label>
+        <% end %>
+        <p class="inline-table text-sky-500"><%= @current_user.email %></p>
+        <%= link "Log out", to: Routes.user_session_path(@conn, :delete), method: :delete, class: "inline-table"%>
+      <% else %>
+        <%= link "Register", to: Routes.user_registration_path(@conn, :new), class: "inline-table text-sky-500" %>
+        <%= link "Log in", to: Routes.user_session_path(@conn, :new), class: "inline-table" %>
+      <% end %>
     </section>
     """
   end
@@ -28,7 +41,7 @@ defmodule AdmitWeb.Components do
         <ul class="inline-flex px-4 rounded-2xl">
           <.nav_links href="/adverts"><i class="fa fa-fw fa-home"></i></.nav_links>
           <.nav_links href="/schools">Schools</.nav_links>
-          <.nav_links href="/admission">Admission</.nav_links>
+          <.nav_links href="/applications">Applications</.nav_links>
           <.nav_links href="/students">Student</.nav_links>
           <.nav_links href="/users/settings">Account</.nav_links>
           <.nav_links href="/icon_link"><i class="fa fa-fw fa-search"></i></.nav_links>
@@ -40,7 +53,7 @@ defmodule AdmitWeb.Components do
 
   def nav_links(assigns) do
     ~H"""
-    <li><a href={@href} class="text-lg text-gray-800 px-4 py-1.5 font-extrabold hover:bg-gray-800 hover:text-white"><%= render_slot(@inner_block)  %></a></li>
+    <li><a href={@href} class=""><%= render_slot(@inner_block)  %></a></li>
     """
   end
 end

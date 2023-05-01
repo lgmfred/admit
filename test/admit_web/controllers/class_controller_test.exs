@@ -12,6 +12,8 @@ defmodule AdmitWeb.ClassControllerTest do
 
   describe "index" do
     test "lists all classes", %{conn: conn} do
+      user = user_fixture()
+      conn = log_in_user(conn, user)
       conn = get(conn, Routes.class_path(conn, :index))
       assert html_response(conn, 200) =~ "Listing Classes"
     end
@@ -19,6 +21,8 @@ defmodule AdmitWeb.ClassControllerTest do
 
   describe "new class" do
     test "renders form", %{conn: conn} do
+      user = user_fixture()
+      conn = log_in_user(conn, user)
       conn = get(conn, Routes.class_path(conn, :new))
       assert html_response(conn, 200) =~ "New Class"
     end

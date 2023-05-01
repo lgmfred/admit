@@ -1,0 +1,40 @@
+<h1>Show Application</h1>
+
+<%= if @live_action in [:edit] do %>
+  <.modal return_to={Routes.application_show_path(@socket, :show, @application)}>
+    <.live_component
+      module={AdmitWeb.ApplicationLive.FormComponent}
+      id={@application.id}
+      title={@page_title}
+      action={@live_action}
+      application={@application}
+      return_to={Routes.application_show_path(@socket, :show, @application)}
+      user={@user}
+      students={@students}
+      editing={@editing}
+      status_options={@status_options}
+    />
+  </.modal>
+<% end %>
+
+<ul>
+
+  <li>
+    <strong>Submitted on:</strong>
+    <%= @application.submitted_on %>
+  </li>
+
+  <li>
+    <strong>Status:</strong>
+    <%= @application.status %>
+  </li>
+
+  <li>
+    <strong>Documents:</strong>
+    <%= @application.documents %>
+  </li>
+
+</ul>
+
+<span><%= live_patch "Edit", to: Routes.application_show_path(@socket, :edit, @application), class: "button" %></span> |
+<span><%= live_redirect "Back", to: Routes.application_index_path(@socket, :index) %></span>

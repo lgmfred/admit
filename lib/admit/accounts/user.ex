@@ -11,6 +11,7 @@ defmodule Admit.Accounts.User do
     field :hashed_password, :string, redact: true
     field :confirmed_at, :naive_datetime
     belongs_to :school, Admit.Schools.School, on_replace: :update
+    has_many :applications, Admit.Applications.Application
 
     timestamps()
   end

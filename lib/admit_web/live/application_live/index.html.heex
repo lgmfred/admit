@@ -1,0 +1,59 @@
+<h1>Listing Applications</h1>
+
+<%= if @live_action in [:new, :edit] do %>
+  <.modal return_to={Routes.application_index_path(@socket, :index)}>
+    <.live_component
+      module={AdmitWeb.ApplicationLive.FormComponent}
+      id={@application.id || :new}
+      title={@page_title}
+      action={@live_action}
+      application={@application}
+      return_to={Routes.application_index_path(@socket, :index)}
+      user={@user}
+      advert={@advert}
+      students={@students}
+      status_options={@status_options}
+      editing={@editing}
+    />
+  </.modal>
+<% end %>
+
+<div id="applications">
+  <div class="wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th class="item">Submitted</th>
+          <th>Status</th>
+          <th>School</th>
+          <th>Class</th>
+          <th>Student</th>
+
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="applications">
+        <%= for application <- @applications do %>
+          <tr id={"application-#{application.id}"}>
+            <td class="item">
+              <span class="id"><%= application.id %></span>
+              <%= NaiveDateTime.to_date(application.submitted_on) %>
+            </td>
+            <td><%= application.status %></td>
+            <td><%= application.school.name %></td>
+            <td><%= application.advert.class.name%></td>
+            <td><%= application.student.name %></td>
+
+            <td>
+              <span><%= live_redirect "Show", to: Routes.application_show_path(@socket, :show, application) %></span>
+              <span><%= live_patch "Edit", to: Routes.application_index_path(@socket, :edit, application) %></span>
+              <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: application.id, data: [confirm: "Are you sure?"] %></span>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<span><%= live_patch "New Application", to: Routes.application_index_path(@socket, :new) %></span>

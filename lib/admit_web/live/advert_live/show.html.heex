@@ -14,12 +14,35 @@
   </.modal>
 <% end %>
 
+<%= live_redirect "Apply Now", to: Routes.application_index_path(@socket, :new, advert_id: @advert.id) %>
+
 <ul>
 
   <li>
     <strong>Published:</strong>
-    <%= @advert.published_on %>
+    <%= NaiveDateTime.to_date(@advert.inserted_at) %>
   </li>
+
+  <li>
+    <strong>Deadline:</strong>
+    <%= @advert.deadline %>
+  </li>
+
+  <li>
+    <strong>Days Until Deadline:</strong>
+    <%= Date.diff(@advert.deadline, @advert.inserted_at) %>
+  </li>
+
+  <li>
+    <strong>School:</strong>
+    <%= @advert.school.name %>
+  </li>
+
+  <li>
+    <strong>Level:</strong>
+    <%= @advert.school.level %>
+  </li>
+
 
   <li>
     <strong>Class:</strong>
@@ -29,11 +52,6 @@
   <li>
     <strong>Description:</strong>
     <%= @advert.description %>
-  </li>
-
-  <li>
-    <strong>Deadline:</strong>
-    <%= @advert.deadline %>
   </li>
 
 </ul>

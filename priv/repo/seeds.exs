@@ -19,6 +19,14 @@ alias Admit.Schools.School
 alias Admit.Students
 alias Admit.Students.Student
 
+levels = ["nursery", "primary", "secondary"]
+
+classes = %{
+  "Nursery" => ["Baby", "Middle", "Top"],
+  "Primary" => Enum.map(1..7, fn x -> "P.#{x}" end),
+  "Secondary" => Enum.map(1..6, fn x -> "S.#{x}" end)
+}
+
 ## Create 3 default users to be used as school admins
 {:ok, user1} =
   case Repo.get_by(User, email: "test@test.com") do
@@ -53,30 +61,82 @@ alias Admit.Students.Student
       Accounts.register_user(user_attrs)
   end
 
-## Create A school with user1 and user2 as admins
+## Create A school with user1
 
 {:ok, school} =
-  case Repo.get_by(School, name: "Abcd highschool ituri") do
+  case Repo.get_by(School, name: "simibili primary school") do
     %School{} = school ->
       IO.inspect(school.name, label: "School Already Created")
       {:ok, school}
 
     nil ->
       school_attrs = %{
-        address: "Plot 617 Ituri street",
-        email: "abcd@ituri.com",
-        level: "highschool",
-        name: "Abcd highschool ituri",
-        telephone: "0987654321"
+        address: Faker.Address.street_address(),
+        email: Faker.Internet.safe_email(),
+        level: "Primary",
+        name: "simibili primary school",
+        telephone: Faker.Phone.EnGb.landline_number()
       }
 
       Schools.create_school(school_attrs, user1)
   end
 
-# Add user2 as the second admin for the school
-{:ok, _school} =
-  if user2.school_id == school.id do
-    {:ok, school}
-  else
-    Schools.add_admin(school.id, user2.email)
+# Add classes to the school
+school_classes = Map.get(classes, school.level, [])
+
+Enum.each(school_classes, fn class_name ->
+  case Repo.get_by(Class, name: class_name) do
+    %Class{} = class ->
+      IO.inspect(class.name, label: "Class Already Created")
+      {:ok, school}
+
+    nil ->
+      class_attrs = %{
+        school_id: school.id,
+        name: class_name,
+        description: Faker.Lorem.sentence(3)
+      }
+
+      Classes.create_class(class_attrs)
   end
+end)
+
+## Create A school with user2 as admin
+
+{:ok, school} =
+  case Repo.get_by(School, name: "St. Joseph's College Paranga") do
+    %School{} = school ->
+      IO.inspect(school.name, label: "School Already Created")
+      {:ok, school}
+
+    nil ->
+      school_attrs = %{
+        address: Faker.Address.street_address(),
+        email: Faker.Internet.safe_email(),
+        level: "Secondary",
+        name: "St. Joseph's College Paranga",
+        telephone: Faker.Phone.EnGb.landline_number()
+      }
+
+      Schools.create_school(school_attrs, user2)
+  end
+
+# Add classes to the school
+school_classes = Map.get(classes, school.level, [])
+
+Enum.each(school_classes, fn class_name ->
+  case Repo.get_by(Class, name: class_name) do
+    %Class{} = class ->
+      IO.inspect(class.name, label: "Class Already Created")
+      {:ok, school}
+
+    nil ->
+      class_attrs = %{
+        school_id: school.id,
+        name: class_name,
+        description: Faker.Lorem.sentence(3)
+      }
+
+      Classes.create_class(class_attrs)
+  end
+end)

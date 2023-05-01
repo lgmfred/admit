@@ -9,6 +9,10 @@
   <%= text_input f, :name %>
   <%= error_tag f, :name %>
 
+  <%= label f, :level %>
+  <%= select f, :level, level_options(), prompt: "Select level" %>
+  <%= error_tag f, :level %>
+
   <%= label f, :address %>
   <%= text_input f, :address %>
   <%= error_tag f, :address %>
@@ -20,10 +24,6 @@
   <%= label f, :email %>
   <%= text_input f, :email %>
   <%= error_tag f, :email %>
-
-  <%= label f, :level %>
-  <%= text_input f, :level %>
-  <%= error_tag f, :level %>
 
   <div>
     <%= submit "Save" %>

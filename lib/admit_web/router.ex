@@ -20,18 +20,10 @@ defmodule AdmitWeb.Router do
   scope "/", AdmitWeb do
     pipe_through [:browser, :require_authenticated_user]
 
-    resources "/students", StudentController
-    resources "/schools", SchoolController, except: [:index, :show]
-  end
-
-  scope "/", AdmitWeb do
-    pipe_through :browser
-
     get "/", PageController, :index
-    get "/home", HomeController, :home
-    resources "/schools", SchoolController, only: [:index, :show]
-    resources "/school_admins", SchoolAdminController
+    resources "/schools", SchoolController
     resources "/classes", ClassController
+    resources "/students", StudentController
   end
 
   scope "/", AdmitWeb do
@@ -43,6 +35,13 @@ defmodule AdmitWeb.Router do
 
     live "/adverts/:id", AdvertLive.Show, :show
     live "/adverts/:id/show/edit", AdvertLive.Show, :edit
+
+    live "/applications", ApplicationLive.Index, :index
+    live "/applications/new", ApplicationLive.Index, :new
+    live "/applications/:id/edit", ApplicationLive.Index, :edit
+
+    live "/applications/:id", ApplicationLive.Show, :show
+    live "/applications/:id/show/edit", ApplicationLive.Show, :edit
   end
 
   # Other scopes may use custom stacks.

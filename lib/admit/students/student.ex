@@ -10,6 +10,7 @@ defmodule Admit.Students.Student do
     field :email, :string
     field :name, :string
     belongs_to :user, Admit.Accounts.User
+    has_many :applications, Admit.Applications.Application
 
     timestamps()
   end
