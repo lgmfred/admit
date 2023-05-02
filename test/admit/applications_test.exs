@@ -14,7 +14,7 @@ defmodule Admit.ApplicationsTest do
     import Admit.StudentsFixtures
     import Admit.AdvertsFixtures
 
-    @invalid_attrs %{documents: nil, status: nil, submitted_on: nil}
+    @invalid_attrs %{documents: nil, status: nil}
 
     test "list_applications/0 returns all applications" do
       user = user_fixture()
@@ -65,7 +65,6 @@ defmodule Admit.ApplicationsTest do
       valid_attrs = %{
         documents: "some documents",
         status: "some status",
-        submitted_on: ~N[2023-04-23 21:32:00],
         user_id: user.id,
         advert_id: advert.id,
         school_id: school.id,
@@ -75,7 +74,6 @@ defmodule Admit.ApplicationsTest do
       assert {:ok, %Application{} = application} = Applications.create_application(valid_attrs)
       assert application.documents == "some documents"
       assert application.status == "some status"
-      assert application.submitted_on == ~N[2023-04-23 21:32:00]
     end
 
     test "create_application/1 with invalid data returns error changeset" do
@@ -100,8 +98,7 @@ defmodule Admit.ApplicationsTest do
 
       update_attrs = %{
         documents: "some updated documents",
-        status: "some updated status",
-        submitted_on: ~N[2023-04-24 21:32:00]
+        status: "some updated status"
       }
 
       assert {:ok, %Application{} = application} =
@@ -109,7 +106,6 @@ defmodule Admit.ApplicationsTest do
 
       assert application.documents == "some updated documents"
       assert application.status == "some updated status"
-      assert application.submitted_on == ~N[2023-04-24 21:32:00]
     end
 
     test "update_application/2 with invalid data returns error changeset" do

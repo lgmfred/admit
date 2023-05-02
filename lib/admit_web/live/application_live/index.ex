@@ -101,7 +101,7 @@ defmodule AdmitWeb.ApplicationLive.Index do
     {:noreply, assign(socket, :applications, filtered_applications)}
   end
 
-  defp list_applications do
+  def list_applications do
     Applications.list_applications()
     |> Repo.preload([:student, :school, advert: [:class]])
   end

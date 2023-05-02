@@ -37,7 +37,7 @@
           <tr id={"application-#{application.id}"}>
             <td class="item">
               <span class="id"><%= application.id %></span>
-              <%= NaiveDateTime.to_date(application.submitted_on) %>
+              <%= NaiveDateTime.to_date(application.inserted_at) %>
             </td>
             <td><%= application.status %></td>
             <td><%= application.school.name %></td>

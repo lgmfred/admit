@@ -3,7 +3,6 @@ defmodule Admit.Repo.Migrations.CreateApplications do
 
   def change do
     create table(:applications) do
-      add :submitted_on, :naive_datetime, null: false
       add :status, :string, null: false
       add :documents, :string, null: false
       add :advert_id, references(:adverts, on_delete: :nothing), null: false

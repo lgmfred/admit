@@ -8,7 +8,6 @@ defmodule Admit.Applications.Application do
   schema "applications" do
     field :documents, :string
     field :status, :string
-    field :submitted_on, :naive_datetime
     belongs_to :advert, Admit.Adverts.Advert
     belongs_to :user, Admit.Accounts.User
     belongs_to :student, Admit.Students.Student
@@ -21,7 +20,6 @@ defmodule Admit.Applications.Application do
   def changeset(application, attrs) do
     application
     |> cast(attrs, [
-      :submitted_on,
       :status,
       :documents,
       :advert_id,
@@ -30,7 +28,6 @@ defmodule Admit.Applications.Application do
       :school_id
     ])
     |> validate_required([
-      :submitted_on,
       :status,
       :documents,
       :advert_id,

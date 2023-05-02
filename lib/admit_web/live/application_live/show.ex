@@ -8,6 +8,10 @@ defmodule AdmitWeb.ApplicationLive.Show do
 
   @impl true
   def mount(params, session, socket) do
+    if connected?(socket) do
+      AdmitWeb.Endpoint.subscribe("applications")
+    end
+
     user = Accounts.get_user_by_session_token(session["user_token"])
     students = Index.list_students(user.id)
     advert_id = params["advert_id"]
@@ -23,7 +27,8 @@ defmodule AdmitWeb.ApplicationLive.Show do
      socket
      |> assign(:user, user)
      |> assign(:students, students)
-     |> assign(:advert, advert)}
+     |> assign(:advert, advert)
+     |> assign(:applications, Index.list_applications())}
   end
 
   @impl true
