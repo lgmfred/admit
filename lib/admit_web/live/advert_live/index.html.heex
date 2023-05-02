@@ -30,18 +30,18 @@
     </thead>
     <tbody>
       <%= for advert <- @adverts do %>
-        <tr id={"advert-#{advert.id}"}>
+        <tr id={"advert-#{advert.id}"} class="odd:bg-gray-100">
           <td class="item">
             <span class="id"><%= advert.id %></span>
             <%= advert.school.name %>
           </td>
-          <td><%= advert.school.level %></td>
+          <td ><%= advert.school.level %></td>
           <td><%= advert.class.name %></td>
           <td calss="deadline">
             <span class={
-              if Date.diff(advert.deadline, advert.inserted_at) <= 5, do: "apply-soon"
+              if Date.diff(advert.deadline, Date.utc_today()) <= 5, do: "apply-soon"
               }>
-              <%= Date.diff(advert.deadline, advert.inserted_at) %>
+              <%= Date.diff(advert.deadline, Date.utc_today()) %>
             </span>
           </td>
 

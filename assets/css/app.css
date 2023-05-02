@@ -32,7 +32,7 @@ main {
 }
 
 h1 {
-  @apply text-center text-slate-900 font-extrabold text-3xl;
+  @apply text-center text-slate-900 font-extrabold;
 }
 
 h2 {
@@ -40,7 +40,7 @@ h2 {
 }
 
 h3 {
-  @apply text-center text-slate-800 font-bold text-xl;
+  @apply text-center text-slate-800 font-bold;
 }
 
 
@@ -135,6 +135,90 @@ form[id="password_form"] + p {
   @apply text-center;
 }
 
+/* Students */
+
+#students {
+  @apply mt-8 max-w-4xl mx-auto;
+}
+#students .wrapper {
+  @apply mb-4 align-middle inline-block min-w-full shadow overflow-hidden rounded-lg border-b border-slate-300;
+}
+#students a {
+  @apply underline text-sky-500;
+}
+#students .apply-soon {
+  @apply px-2 py-1 text-base font-medium bg-red-200 text-red-800 rounded-full;
+}
+#students table {
+  @apply min-w-full table-fixed;
+}
+#students table th {
+  @apply bg-transparent px-2 py-1 border-b border-slate-300 bg-sky-500 text-base font-medium uppercase tracking-wider text-center text-white;
+}
+#students table th a {
+  @apply no-underline text-white;
+}
+#students table td {
+  @apply px-2 py-1 whitespace-nowrap border-b border-slate-300 text-slate-900 text-center;
+}
+#students table tbody {
+  @apply bg-white;
+}
+#students table th.item {
+  @apply pl-12 text-left;
+}
+#students table td.item {
+  @apply pl-12 text-left w-2/5;
+}
+#students table td.quantity {
+  @apply w-1/5;
+}
+#students table td.deadline {
+  @apply w-2/5;
+}
+#students table td .id {
+  @apply text-slate-400 -ml-8 mr-4 text-base tabular-nums inline-block w-6;
+}
+#students table td .emoji {
+  @apply mr-1;
+}
+#students .footer {
+  @apply text-center bg-white max-w-4xl mx-auto text-lg py-8;
+}
+#students .footer .pagination {
+  @apply inline-flex shadow-sm;
+}
+#students .footer a {
+  @apply -ml-px inline-flex items-center px-3 py-2 border border-slate-300 bg-white text-base font-medium text-slate-600 no-underline;
+}
+#students .footer a:hover {
+  @apply bg-slate-300;
+}
+#students .footer a.active {
+  @apply bg-indigo-700 text-white;
+}
+#students .footer a:first-child {
+  @apply rounded-l-md;
+}
+#students .footer a:last-child {
+  @apply rounded-r-md;
+}
+#students .footer a.previous {
+  @apply rounded-l-md;
+}
+#students .footer a.next {
+  @apply rounded-r-md;
+}
+#students form {
+  @apply flex items-center justify-end mb-4;
+}
+#students form select {
+  @apply appearance-none bg-slate-200 border border-slate-400 text-slate-700 py-0 pr-7 mr-2 h-8 rounded-lg font-semibold cursor-pointer text-sm mx-1;
+}
+#students form select:focus {
+  @apply outline-none bg-slate-200 border-slate-500;
+}
+
 
 /* Adverts */
 
@@ -160,7 +244,7 @@ form[id="password_form"] + p {
   @apply no-underline text-white;
 }
 #adverts table td {
-  @apply px-2 py-1 whitespace-nowrap border-b border-slate-300 text-lg text-slate-900 text-center;
+  @apply px-2 py-1 whitespace-nowrap border-b border-slate-300 text-slate-900 text-center;
 }
 #adverts table tbody {
   @apply bg-white;
@@ -244,7 +328,7 @@ form[id="password_form"] + p {
   @apply no-underline text-white;
 }
 #applications table td {
-  @apply px-2 py-1 whitespace-nowrap border-b border-slate-300 text-lg font-medium text-slate-900 text-center;
+  @apply px-2 py-1 whitespace-nowrap border-b border-slate-300 font-medium text-slate-900 text-center;
 }
 #applications table tbody {
   @apply bg-white;

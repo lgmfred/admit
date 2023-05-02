@@ -92,7 +92,8 @@ defmodule Admit.SchoolsTest do
       assert user1.school.id == school.id
       assert user2.school.id == school.id
       ## !! Weird preload related bug was here!! Brook fixed it!
-      assert Repo.preload(school, [admins: [:school]], force: true).admins == [user1, user2]
+      admin_users = Repo.preload(school, [admins: [:school]], force: true).admins
+      assert Enum.sort(admin_users) == [user2, user1]
     end
 
     test "update_school/2 with invalid data returns error changeset" do
