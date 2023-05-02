@@ -32,17 +32,17 @@
           <th></th>
         </tr>
       </thead>
-      <tbody id="applications">
+      <tbody>
         <%= for application <- @applications do %>
-          <tr id={"application-#{application.id}"}>
+          <tr id={"application-#{application.id}"} class="odd:bg-gray-100">
             <td class="item">
               <span class="id"><%= application.id %></span>
               <%= NaiveDateTime.to_date(application.inserted_at) %>
             </td>
             <td><%= application.status %></td>
-            <td><%= application.school.name %></td>
+            <td class="item"><%= application.school.name %></td>
             <td><%= application.advert.class.name%></td>
-            <td><%= application.student.name %></td>
+            <td class="item"><%= application.student.name %></td>
 
             <td>
               <span><%= live_redirect "Show", to: Routes.application_show_path(@socket, :show, application) %></span>
