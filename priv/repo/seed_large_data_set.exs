@@ -17,6 +17,8 @@ classes = %{
   "secondary" => Enum.map(1..6, fn x -> "S.#{x}" end)
 }
 
+application_statuses = ["submitted", "review", "interview", "accepted", "rejected"]
+
 ## Create 30 random system users
 rand_sys_users =
   Enum.map(1..30, fn _ ->
@@ -101,7 +103,7 @@ Enum.zip_reduce(shuffled_students, shuffled_adverts, [], fn student, advert, _ac
     student_id: student.id,
     advert_id: advert.id,
     school_id: advert.school_id,
-    status: "submitted",
+    status: Enum.random(application_statuses),
     documents: student.name <> "'s documents"
   }
   |> Repo.insert!()

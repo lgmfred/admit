@@ -22,6 +22,37 @@ defmodule Admit.Applications do
   end
 
   @doc """
+  Returns a list of applications matching the given `filter`
+
+  Filter Example
+
+  %{level: "primary", class: "P.5"}
+  """
+  def list_applications(filter) when is_map(filter) do
+    from(Application)
+    |> filter_by_application_status(filter)
+    |> filter_by_class(filter)
+    |> Repo.all()
+  end
+
+  defp filter_by_application_status(query, %{status: ""}), do: query
+
+  defp filter_by_application_status(query, %{status: status}) do
+    where(query, status: ^status)
+  end
+
+  defp filter_by_class(query, %{class: ""}), do: query
+
+  defp filter_by_class(query, %{class: class}) do
+    # Join the advert and class associations with the application
+    from(app in query,
+      join: adv in assoc(app, :advert),
+      join: cl in assoc(adv, :class),
+      where: cl.name == ^class
+    )
+  end
+
+  @doc """
   Gets a single application.
 
   Raises `Ecto.NoResultsError` if the Application does not exist.

@@ -29,6 +29,7 @@ defmodule AdmitWeb.ApplicationLive.Index do
      |> assign(:user, user)
      |> assign(:advert, advert)
      |> assign(:students, list_students(user.id))
+     |> assign(filter: %{status: "", class: ""})
      |> assign(:applications, list_applications())}
   end
 
@@ -74,6 +75,12 @@ defmodule AdmitWeb.ApplicationLive.Index do
     {:noreply, assign(socket, :applications, filtered_applications)}
   end
 
+  def handle_event("filter", %{"status" => status, "class" => class}, socket) do
+    filter = %{status: status, class: class}
+    applications = list_applications(filter)
+    {:noreply, assign(socket, applications: applications, filter: filter)}
+  end
+
   @impl true
   def handle_info(%{event: "create_application", payload: application}, socket) do
     {:noreply, assign(socket, :applications, [application | socket.assigns.applications])}
@@ -103,6 +110,11 @@ defmodule AdmitWeb.ApplicationLive.Index do
 
   def list_applications do
     Applications.list_applications()
+    |> Repo.preload([:student, :school, advert: [:class]])
+  end
+
+  def list_applications(filter) do
+    Applications.list_applications(filter)
     |> Repo.preload([:student, :school, advert: [:class]])
   end
 

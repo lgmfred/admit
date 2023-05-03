@@ -17,9 +17,7 @@ defmodule AdmitWeb.AdvertLive.Index do
 
     user = Accounts.get_user_by_session_token(session["user_token"])
 
-    adverts =
-      list_adverts()
-      |> Repo.preload([:school, :class])
+    adverts = list_adverts()
 
     list_classes =
       if user.school_id do
@@ -32,6 +30,7 @@ defmodule AdmitWeb.AdvertLive.Index do
      socket
      |> assign(:user, user)
      |> assign(:list_classes, list_classes)
+     |> assign(filter: %{level: "", class: ""})
      |> assign(:adverts, adverts)}
   end
 
@@ -73,6 +72,12 @@ defmodule AdmitWeb.AdvertLive.Index do
     {:noreply, assign(socket, :adverts, filtered_adverts)}
   end
 
+  def handle_event("filter", %{"level" => level, "class" => class}, socket) do
+    filter = %{level: level, class: class}
+    adverts = list_adverts(filter)
+    {:noreply, assign(socket, adverts: adverts, filter: filter)}
+  end
+
   @impl true
   def handle_info(%{event: "create_advert", payload: advert}, socket) do
     {:noreply, assign(socket, :adverts, [advert | socket.assigns.adverts])}
@@ -100,6 +105,12 @@ defmodule AdmitWeb.AdvertLive.Index do
 
   defp list_adverts do
     Adverts.list_adverts()
+    |> Repo.preload([:school, :class])
+  end
+
+  defp list_adverts(filter) do
+    Adverts.list_adverts(filter)
+    |> Repo.preload([:school, :class])
   end
 
   def list_classes(school_id) do

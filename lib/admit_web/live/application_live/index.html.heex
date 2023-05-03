@@ -1,24 +1,44 @@
 <h1>Listing Applications</h1>
 
-<%= if @live_action in [:new, :edit] do %>
-  <.modal return_to={Routes.application_index_path(@socket, :index)}>
-    <.live_component
-      module={AdmitWeb.ApplicationLive.FormComponent}
-      id={@application.id || :new}
-      title={@page_title}
-      action={@live_action}
-      application={@application}
-      return_to={Routes.application_index_path(@socket, :index)}
-      user={@user}
-      advert={@advert}
-      students={@students}
-      status_options={@status_options}
-      editing={@editing}
-    />
-  </.modal>
-<% end %>
-
 <div id="applications">
+  <%= if @live_action in [:new, :edit] do %>
+    <.modal return_to={Routes.application_index_path(@socket, :index)}>
+      <.live_component
+        module={AdmitWeb.ApplicationLive.FormComponent}
+        id={@application.id || :new}
+        title={@page_title}
+        action={@live_action}
+        application={@application}
+        return_to={Routes.application_index_path(@socket, :index)}
+        user={@user}
+        advert={@advert}
+        students={@students}
+        status_options={@status_options}
+        editing={@editing}
+        filter={@filter}
+      />
+    </.modal>
+  <% end %>
+
+  <form phx-change="filter">
+    <div class="filters">
+      <select name="status">
+        <%= Phoenix.HTML.Form.options_for_select(
+          ["All Statuses": "", Submitted: "submitted", Review: "review", Intreview: "interview", 
+            Accepted: "accepted", Rejected: "rejected"],
+          @filter.status
+        ) %>
+      </select>
+
+      <select name="class">
+        <%= Phoenix.HTML.Form.options_for_select(
+          ["", "Baby", "Middle", "Top"] ++ Enum.map(1..7, fn x -> "P.#{x}" end) ++ Enum.map(1..6, fn x -> "S.#{x}" end),
+          @filter.class
+        ) %>
+      </select>
+    </div>
+  </form>
+
   <div class="wrapper">
     <table>
       <thead>

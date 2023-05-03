@@ -22,6 +22,38 @@ defmodule Admit.Adverts do
   end
 
   @doc """
+  Returns a list of adverts matching the given `filter`
+
+  Filter Example: %{level: "primary", class: "P.5"}
+  """
+  def list_adverts(filter) when is_map(filter) do
+    from(Advert)
+    |> filter_by_school_level(filter)
+    |> filter_by_class(filter)
+    |> Repo.all()
+  end
+
+  defp filter_by_school_level(query, %{level: ""}), do: query
+
+  defp filter_by_school_level(query, %{level: level}) do
+    # Join the school association with the advert association
+    from(a in query,
+      join: s in assoc(a, :school),
+      where: s.level == ^level
+    )
+  end
+
+  defp filter_by_class(query, %{class: ""}), do: query
+
+  defp filter_by_class(query, %{class: class}) do
+    # Join the class association with the advert association
+    from(a in query,
+      join: c in assoc(a, :class),
+      where: c.name == ^class
+    )
+  end
+
+  @doc """
   Gets a single advert.
 
   Raises `Ecto.NoResultsError` if the Advert does not exist.
