@@ -223,7 +223,7 @@ form[id="password_form"] + p {
 /* Adverts */
 
 #adverts {
-  @apply mt-8 max-w-4xl mx-auto;
+  @apply mt-2 max-w-4xl mx-auto;
 }
 #adverts .wrapper {
   @apply mb-4 align-middle inline-block min-w-full shadow overflow-hidden rounded-lg border-b border-slate-300;
@@ -295,7 +295,7 @@ form[id="password_form"] + p {
   @apply rounded-r-md;
 }
 #adverts form {
-  @apply flex items-center justify-end mb-4;
+  @apply items-center justify-end mb-4;
 }
 #adverts form select {
   @apply appearance-none bg-slate-200 border border-slate-400 text-slate-700 py-0 pr-7 mr-2 h-8 rounded-lg font-semibold cursor-pointer text-sm mx-1;
@@ -304,10 +304,20 @@ form[id="password_form"] + p {
   @apply outline-none bg-slate-200 border-slate-500;
 }
 
+#adverts form .filters {
+  @apply flex items-baseline justify-around;
+}
+#adverts form .filters select {
+  @apply bg-slate-200 border border-slate-400 text-slate-700 rounded-lg font-semibold cursor-pointer;
+}
+#adverts form .filters select:focus {
+  @apply outline-none bg-slate-200 border-slate-500;
+}
+
 /* Applications */
 
 #applications {
-  @apply mt-8  mx-auto;
+  @apply mt-2 mx-auto;
 }
 #applications .wrapper {
   @apply mb-4 align-middle inline-block min-w-full shadow overflow-hidden rounded-lg border-b border-slate-300;
@@ -379,12 +389,22 @@ form[id="password_form"] + p {
   @apply rounded-r-md;
 }
 #applications form {
-  @apply flex items-center justify-end mb-4;
+  @apply items-center justify-end mb-4;
 }
 #applications form select {
   @apply appearance-none bg-slate-200 border border-slate-400 text-slate-700 py-0 pr-7 mr-2 h-8 rounded-lg font-semibold cursor-pointer text-sm mx-1;
 }
 #applications form select:focus {
+  @apply outline-none bg-slate-200 border-slate-500;
+}
+
+#applications form .filters {
+  @apply flex items-baseline justify-around;
+}
+#applications form .filters select {
+  @apply bg-slate-200 border border-slate-400 text-slate-700 rounded-lg font-semibold cursor-pointer;
+}
+#applications form .filters select:focus {
   @apply outline-none bg-slate-200 border-slate-500;
 }
 

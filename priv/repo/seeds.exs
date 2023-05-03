@@ -41,6 +41,8 @@ classes = %{
   "secondary" => Enum.map(1..6, fn x -> "S.#{x}" end)
 }
 
+application_statuses = ["submitted", "review", "interview", "accepted", "rejected"]
+
 ## Create 3 system users
 users =
   Enum.map(users_params, fn {email, password} ->
@@ -181,9 +183,6 @@ students =
 
 adverts = Adverts.list_adverts() |> Enum.shuffle()
 
-# field :documents, :string
-# field :status, :string
-# Enum.zip_reduce([1, 2], [3, 4], 0, fn x, y, acc -> x + y + acc end)
 Enum.zip_reduce(students, adverts, [], fn student, advert, acc ->
   {:ok, application} =
     case Repo.get_by(Application, student_id: student.id) do
@@ -197,7 +196,7 @@ Enum.zip_reduce(students, adverts, [], fn student, advert, acc ->
           student_id: student.id,
           advert_id: advert.id,
           school_id: advert.school_id,
-          status: "submitted",
+          status: Enum.random(application_statuses),
           documents: student.name <> "'s documents"
         }
 

@@ -1,7 +1,6 @@
 
 <h1>Listing Adverts</h1>
 <div id="adverts">
-  <div class="wrapper">
     <%= if @live_action in [:new, :edit] do %>
     <.modal return_to={Routes.advert_index_path(@socket, :index)}>
       <.live_component
@@ -13,10 +12,30 @@
         return_to={Routes.advert_index_path(@socket, :index)}
         user={@user}
         list_classes={@list_classes}
+        filter={@filter}
       />
     </.modal>
   <% end %>
 
+  <form phx-change="filter">
+    <div class="filters">
+      <select name="level">
+        <%= Phoenix.HTML.Form.options_for_select(
+          ["All Levels": "", Nursery: "nursery", Primary: "primary", Secondary: "secondary"],
+          @filter.level
+        ) %>
+      </select>
+
+      <select name="class">
+        <%= Phoenix.HTML.Form.options_for_select(
+          ["", "Baby", "Middle", "Top"] ++ Enum.map(1..7, fn x -> "P.#{x}" end) ++ Enum.map(1..6, fn x -> "S.#{x}" end),
+          @filter.class
+        ) %>
+      </select>
+    </div>
+  </form>
+
+  <div class="wrapper">
   <table>
     <thead >
       <tr >
