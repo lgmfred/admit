@@ -1,8 +1,7 @@
 # Admit
 
-[![CI](https://github.com/lgmfred/admit/actions/workflows/ci.yaml/badge.svg?branch=main)](https://github.com/lgmfred/admit/actions/workflows/ci.yml)
-[![Docs](https://github.com/lgmfred/admit/actions/workflows/docs.yaml/badge.svg?branch=main)](https://github.com/lgmfred/admit/actions/workflows/docs.yml)
-[![Deploy](https://github.com/lgmfred/admit/actions/workflows/deploy.yaml/badge.svg?branch=main)](https://github.com/lgmfred/admit/actions/workflows/deploy.yml)
+![CI](https://github.com/lgmfred/admit/actions/workflows/ci.yml/badge.svg)
+![Docs](https://github.com/lgmfred/admit/actions/workflows/docs.yml/badge.svg)
 
 A junky-as-hell online school admission management system. This is a capstone project to meet the requirements to graduate from the first [DockYard Academy](https://academy.dockyard.com/) cohort.
 

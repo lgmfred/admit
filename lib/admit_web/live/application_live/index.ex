@@ -15,22 +15,28 @@ defmodule AdmitWeb.ApplicationLive.Index do
     end
 
     user = Accounts.get_user_by_session_token(session["user_token"])
-    advert_id = params["advert_id"]
-
-    advert =
-      if advert_id do
-        Adverts.get_advert!(advert_id)
-      else
-        advert_id
-      end
+    advert = get_advert(params)
+    applications = list_applications(user)
+    filter = %{status: "", class: ""}
+    classes = get_classes(user)
+    status = status_options()
 
     {:ok,
      socket
-     |> assign(:user, user)
-     |> assign(:advert, advert)
+     |> assign(
+       user: user,
+       advert: advert,
+       classes: classes,
+       applications: applications,
+       status: status,
+       filter: filter
+     )
      |> assign(:students, list_students(user.id))
-     |> assign(filter: %{status: "", class: ""})
-     |> assign(:applications, list_applications())}
+     |> allow_upload(:documents,
+       accept: ~w(.jpg .jpeg .png .pdf),
+       max_entries: 3,
+       max_file_size: 1_000_000
+     )}
   end
 
   @impl true
@@ -42,7 +48,6 @@ defmodule AdmitWeb.ApplicationLive.Index do
     socket
     |> assign(:page_title, "Edit Application")
     |> assign(:editing, true)
-    |> assign(:status_options, status_options())
     |> assign(:application, Applications.get_application!(id))
   end
 
@@ -50,7 +55,6 @@ defmodule AdmitWeb.ApplicationLive.Index do
     socket
     |> assign(:page_title, "New Application")
     |> assign(:editing, false)
-    |> assign(:status_options, status_options())
     |> assign(:application, %Application{})
   end
 
@@ -77,7 +81,7 @@ defmodule AdmitWeb.ApplicationLive.Index do
 
   def handle_event("filter", %{"status" => status, "class" => class}, socket) do
     filter = %{status: status, class: class}
-    applications = list_applications(filter)
+    applications = list_applications(socket.assigns.user, filter)
     {:noreply, assign(socket, applications: applications, filter: filter)}
   end
 
@@ -108,14 +112,30 @@ defmodule AdmitWeb.ApplicationLive.Index do
     {:noreply, assign(socket, :applications, filtered_applications)}
   end
 
-  def list_applications do
-    Applications.list_applications()
+  def list_applications(user, filter \\ %{status: "", class: ""}) do
+    case user do
+      %{school_id: nil} -> Applications.list_user_applications(user.id, filter)
+      %{school_id: school_id} -> Applications.list_school_applications(school_id, filter)
+      _ -> []
+    end
     |> Repo.preload([:student, :school, advert: [:class]])
   end
 
-  def list_applications(filter) do
-    Applications.list_applications(filter)
-    |> Repo.preload([:student, :school, advert: [:class]])
+  def get_advert(params) do
+    case params["advert_id"] do
+      nil -> nil
+      advert_id -> Adverts.get_advert!(advert_id)
+    end
+  end
+
+  def get_classes(user) do
+    classes =
+      list_applications(user)
+      |> Enum.map(fn app -> {app.advert.class.name, app.advert.class.name} end)
+      |> Enum.uniq()
+      |> Enum.sort()
+
+    [{:"Select Class", ""} | classes]
   end
 
   def list_students(user_id) do
@@ -125,6 +145,7 @@ defmodule AdmitWeb.ApplicationLive.Index do
 
   def status_options do
     [
+      "Select Status": nil,
       Submitted: "submitted",
       Review: "review",
       Interview: "interview",

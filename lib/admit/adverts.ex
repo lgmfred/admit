@@ -18,7 +18,7 @@ defmodule Admit.Adverts do
 
   """
   def list_adverts do
-    Repo.all(Advert)
+    Repo.all(from a in Advert, order_by: [asc: a.id])
   end
 
   @doc """

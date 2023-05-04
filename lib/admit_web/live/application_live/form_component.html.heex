@@ -16,16 +16,31 @@
 
     <%= if @editing do %>
       <%= label f, :status %>
-      <%= select f, :status, @status_options, prompt: @application.status %>
+      <%= select f, :status, @status, prompt: @application.status %>
       <%= error_tag f, :status %>
     <% end %>
 
-    <%= label f, :documents %>
-    <%= text_input f, :documents %>
-    <%= error_tag f, :documents %>
+    <%!-- <%= inspect(@uploads.documents) %> --%>
+
+    <div class="hint">
+      Add up to <%= @uploads.documents.max_entries %> photos
+      (max <%= trunc(@uploads.documents.max_file_size / 1_000_000) %> MB each)
+    </div>
+
+
+    <%= if assigns[:uploads] do %>
+      <div phx-drop-target={@uploads.documents.ref}>
+        <%= live_file_input @uploads.documents %>
+      </div>
+    <% end %>
+
+    <%= for entry <- @uploads.documents.entries do %>
+      <%= entry.client_name %>
+    <% end %>
   
     <div>
       <%= submit "Save", phx_disable_with: "Saving..." %>
     </div>
+
   </.form>
 </div>

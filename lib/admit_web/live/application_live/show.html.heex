@@ -10,9 +10,10 @@
       application={@application}
       return_to={Routes.application_show_path(@socket, :show, @application)}
       user={@user}
+      uploads={@uploads}
       students={@students}
       editing={@editing}
-      status_options={@status_options}
+      status={@status}
     />
   </.modal>
 <% end %>
@@ -27,6 +28,21 @@
   <li>
     <strong>Status:</strong>
     <%= @application.status %>
+  </li>
+
+  <li>
+    <strong>School:</strong>
+    <%= @application.school.name %>
+  </li>
+
+  <li>
+    <strong>Class:</strong>
+    <%= @application.advert.class.name %>
+  </li>
+
+  <li>
+    <strong>Student:</strong>
+    <%= @application.student.name %>
   </li>
 
   <li>
