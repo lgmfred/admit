@@ -11,7 +11,7 @@
         advert={@advert}
         return_to={Routes.advert_index_path(@socket, :index)}
         user={@user}
-        list_classes={@list_classes}
+        classes={@classes}
         filter={@filter}
       />
     </.modal>
@@ -19,18 +19,20 @@
 
   <form phx-change="filter">
     <div class="filters">
-      <select name="level">
-        <%= Phoenix.HTML.Form.options_for_select(
-          ["All Levels": "", Nursery: "nursery", Primary: "primary", Secondary: "secondary"],
-          @filter.level
-        ) %>
-      </select>
+
+      <%= if @user.school_id do %>
+        <input type="hidden" name="level" value="" />
+      <% else %>
+        <select name="level">
+          <%= Phoenix.HTML.Form.options_for_select(
+            ["Select Level": "", Nursery: "nursery", Primary: "primary", Secondary: "secondary"],
+            @filter.level
+          ) %>
+        </select>
+      <% end %>
 
       <select name="class">
-        <%= Phoenix.HTML.Form.options_for_select(
-          ["", "Baby", "Middle", "Top"] ++ Enum.map(1..7, fn x -> "P.#{x}" end) ++ Enum.map(1..6, fn x -> "S.#{x}" end),
-          @filter.class
-        ) %>
+        <%= Phoenix.HTML.Form.options_for_select(@classes, @filter.class) %>
       </select>
     </div>
   </form>

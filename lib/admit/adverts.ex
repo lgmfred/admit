@@ -33,6 +33,17 @@ defmodule Admit.Adverts do
     |> Repo.all()
   end
 
+  def list_school_adverts(school_id, filter \\ %{level: "", class: ""})
+      when is_map(filter) do
+    from(a in Advert,
+      where: a.school_id == ^school_id,
+      order_by: [asc: a.id]
+    )
+    |> filter_by_school_level(filter)
+    |> filter_by_class(filter)
+    |> Repo.all()
+  end
+
   defp filter_by_school_level(query, %{level: ""}), do: query
 
   defp filter_by_school_level(query, %{level: level}) do

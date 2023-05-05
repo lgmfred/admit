@@ -2,13 +2,12 @@ defmodule AdmitWeb.ApplicationLive.Show do
   use AdmitWeb, :live_view
 
   alias Admit.Accounts
-  alias Admit.Adverts
   alias Admit.Applications
-  alias AdmitWeb.ApplicationLive.Index
   alias Admit.Repo
+  alias AdmitWeb.ApplicationLive.Index
 
   @impl true
-  def mount(params, session, socket) do
+  def mount(_params, session, socket) do
     if connected?(socket) do
       AdmitWeb.Endpoint.subscribe("applications")
     end

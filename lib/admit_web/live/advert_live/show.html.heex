@@ -7,7 +7,7 @@
       id={@advert.id}
       title={@page_title}
       action={@live_action}
-      list_classes={@list_classes}
+      classes={@classes}
       advert={@advert}
       return_to={Routes.advert_show_path(@socket, :show, @advert)}
     />
@@ -56,5 +56,9 @@
 
 </ul>
 
-<span><%= live_patch "Edit", to: Routes.advert_show_path(@socket, :edit, @advert), class: "button" %></span> |
+<%= if @user.school_id do %>
+  <span>
+    <%= live_patch "Edit", to: Routes.advert_show_path(@socket, :edit, @advert), class: "button" %>
+  </span> |
+<% end %>
 <span><%= live_redirect "Back", to: Routes.advert_index_path(@socket, :index) %></span>
