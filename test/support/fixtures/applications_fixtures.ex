@@ -11,7 +11,7 @@ defmodule Admit.ApplicationsFixtures do
     {:ok, application} =
       attrs
       |> Enum.into(%{
-        documents: "some documents",
+        documents: ["/uploads/some_documents"],
         status: "submitted",
         submitted_on: ~N[2023-04-23 21:32:00]
       })

@@ -35,7 +35,7 @@ defmodule AdmitWeb.ApplicationLive.Index do
      |> allow_upload(:documents,
        accept: ~w(.jpg .jpeg .png .pdf),
        max_entries: 3,
-       max_file_size: 1_000_000
+       max_file_size: 10_000_000
      )}
   end
 

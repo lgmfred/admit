@@ -47,7 +47,13 @@
 
   <li>
     <strong>Documents:</strong>
-    <%= @application.documents %>
+      <ul>
+        <%= for {doc_link, index} <- Enum.with_index(@application.documents) do%>
+          <li>
+            <%= link "Document #{index + 1}", to: Routes.static_path(@socket, doc_link), target: "_blank" %>
+          </li>
+        <% end %>
+      </ul>
   </li>
 
 </ul>

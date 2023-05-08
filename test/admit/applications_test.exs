@@ -63,7 +63,7 @@ defmodule Admit.ApplicationsTest do
       advert = advert_fixture(%{school_id: school.id, class_id: class.id})
 
       valid_attrs = %{
-        documents: "/uploads/some_crazy_docs.png",
+        documents: ["/uploads/some_crazy_docs.png"],
         status: "some status",
         user_id: user.id,
         advert_id: advert.id,
@@ -72,7 +72,7 @@ defmodule Admit.ApplicationsTest do
       }
 
       assert {:ok, %Application{} = application} = Applications.create_application(valid_attrs)
-      assert application.documents == "/uploads/some_crazy_docs.png"
+      assert application.documents == ["/uploads/some_crazy_docs.png"]
       assert application.status == "some status"
     end
 

@@ -18,9 +18,9 @@
       <%= label f, :status %>
       <%= select f, :status, @status, prompt: @application.status %>
       <%= error_tag f, :status %>
+    <% else %>
+      <input type="hidden" name="status" value="submitted" />
     <% end %>
-
-    <%!-- <%= inspect(@uploads.documents) %> --%>
 
     <div class="hint">
       Add up to <%= @uploads.documents.max_entries %> photos
