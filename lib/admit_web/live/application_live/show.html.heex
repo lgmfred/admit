@@ -10,9 +10,10 @@
       application={@application}
       return_to={Routes.application_show_path(@socket, :show, @application)}
       user={@user}
+      uploads={@uploads}
       students={@students}
       editing={@editing}
-      status_options={@status_options}
+      status={@status}
     />
   </.modal>
 <% end %>
@@ -30,11 +31,36 @@
   </li>
 
   <li>
+    <strong>School:</strong>
+    <%= @application.school.name %>
+  </li>
+
+  <li>
+    <strong>Class:</strong>
+    <%= @application.advert.class.name %>
+  </li>
+
+  <li>
+    <strong>Student:</strong>
+    <%= @application.student.name %>
+  </li>
+
+  <li>
     <strong>Documents:</strong>
-    <%= @application.documents %>
+      <ul>
+        <%= for {doc_link, index} <- Enum.with_index(@application.documents) do%>
+          <li>
+            <%= link "Document #{index + 1}", to: Routes.static_path(@socket, doc_link), target: "_blank" %>
+          </li>
+        <% end %>
+      </ul>
   </li>
 
 </ul>
 
-<span><%= live_patch "Edit", to: Routes.application_show_path(@socket, :edit, @application), class: "button" %></span> |
-<span><%= live_redirect "Back", to: Routes.application_index_path(@socket, :index) %></span>
+<span>
+  <%= live_patch "Edit", to: Routes.application_show_path(@socket, :edit, @application), class: "button" %>
+</span> |
+<span>
+  <%= live_redirect "Back", to: Routes.application_index_path(@socket, :index) %>
+</span>

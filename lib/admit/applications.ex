@@ -18,7 +18,7 @@ defmodule Admit.Applications do
 
   """
   def list_applications do
-    Repo.all(Application)
+    Repo.all(from a in Application, order_by: [asc: a.id])
   end
 
   @doc """
@@ -30,6 +30,27 @@ defmodule Admit.Applications do
   """
   def list_applications(filter) when is_map(filter) do
     from(Application)
+    |> filter_by_application_status(filter)
+    |> filter_by_class(filter)
+    |> Repo.all()
+  end
+
+  def list_user_applications(user_id, filter \\ %{status: "", class: ""}) when is_map(filter) do
+    from(a in Application,
+      where: a.user_id == ^user_id,
+      order_by: [asc: a.id]
+    )
+    |> filter_by_application_status(filter)
+    |> filter_by_class(filter)
+    |> Repo.all()
+  end
+
+  def list_school_applications(school_id, filter \\ %{status: "", class: ""})
+      when is_map(filter) do
+    from(a in Application,
+      where: a.school_id == ^school_id,
+      order_by: [asc: a.id]
+    )
     |> filter_by_application_status(filter)
     |> filter_by_class(filter)
     |> Repo.all()

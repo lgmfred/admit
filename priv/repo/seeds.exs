@@ -197,7 +197,7 @@ Enum.zip_reduce(students, adverts, [], fn student, advert, acc ->
           advert_id: advert.id,
           school_id: advert.school_id,
           status: Enum.random(application_statuses),
-          documents: student.name <> "'s documents"
+          documents: ["/uploads/#{student.name}_documents"]
         }
 
         Applications.create_application(application_params)

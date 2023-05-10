@@ -104,7 +104,7 @@ Enum.zip_reduce(shuffled_students, shuffled_adverts, [], fn student, advert, _ac
     advert_id: advert.id,
     school_id: advert.school_id,
     status: Enum.random(application_statuses),
-    documents: student.name <> "'s documents"
+    documents: ["/uploads/#{student.name}_documents"]
   }
   |> Repo.insert!()
 end)

@@ -11,24 +11,26 @@
     <script defer phx-track-static type="text/javascript" src={Routes.static_path(@conn, "/assets/app.js")}></script>
   </head>
   <body>
-    <header class="z-10 my-0">
-      <section class="shadow-lg my-0 mx-auto max-h-12 block bg-gray-400/75 text-center pb-0.5">
-        <a href="#" class="font-mono">Admit</a>
-        <%= render "_user_menu.html", assigns %>
-      </section>
-      <section class="bg-gray-300 text-center py-0.5 shadow-2xl">
-        <nav class="border-solid">
-          <ul class="inline-flex px-4 rounded-2xl">
-            <AdmitWeb.CustomComponents.nav_links href="/adverts"><i class="fa fa-fw fa-home"></i></AdmitWeb.CustomComponents.nav_links>
-            <AdmitWeb.CustomComponents.nav_links href="/schools">Schools</AdmitWeb.CustomComponents.nav_links>
-            <AdmitWeb.CustomComponents.nav_links href="/applications">Applications</AdmitWeb.CustomComponents.nav_links>
-            <AdmitWeb.CustomComponents.nav_links href="/students">Student</AdmitWeb.CustomComponents.nav_links>
-            <AdmitWeb.CustomComponents.nav_links href="/users/settings">Account</AdmitWeb.CustomComponents.nav_links>
-            <AdmitWeb.CustomComponents.nav_links href="/icon_link"><i class="fa fa-fw fa-search"></i></AdmitWeb.CustomComponents.nav_links>
-          </ul>
-        </nav>
-      </section>
-    </header>
+    <%= if @current_user  do %>
+      <header class="z-10 my-0">
+        <section class="shadow-lg my-0 mx-auto max-h-12 block bg-gray-400/75 text-center pb-0.5">
+          <a href="#" class="font-mono">Admit</a>
+          <%= render "_user_menu.html", assigns %>
+        </section>
+        <section class="bg-gray-300 text-center py-0.5 shadow-2xl">
+          <nav class="border-solid">
+            <ul class="inline-flex px-4 rounded-2xl">
+              <AdmitWeb.CustomComponents.nav_links href="/adverts"><i class="fa fa-fw fa-home"></i></AdmitWeb.CustomComponents.nav_links>
+              <AdmitWeb.CustomComponents.nav_links href="/schools">Schools</AdmitWeb.CustomComponents.nav_links>
+              <AdmitWeb.CustomComponents.nav_links href="/applications">Applications</AdmitWeb.CustomComponents.nav_links>
+              <AdmitWeb.CustomComponents.nav_links href="/students">Student</AdmitWeb.CustomComponents.nav_links>
+              <AdmitWeb.CustomComponents.nav_links href="/users/settings">Account</AdmitWeb.CustomComponents.nav_links>
+              <AdmitWeb.CustomComponents.nav_links href="/icon_link"><i class="fa fa-fw fa-search"></i></AdmitWeb.CustomComponents.nav_links>
+            </ul>
+          </nav>
+        </section>
+      </header>
+    <% end %>
     <%= @inner_content %>
     <footer class="fixed bottom-0 w-full bg-gray-300 py-1 text-center">
       <p>Copyright © 2023 Admit.</p>

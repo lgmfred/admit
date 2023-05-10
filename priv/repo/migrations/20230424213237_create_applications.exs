@@ -4,7 +4,7 @@ defmodule Admit.Repo.Migrations.CreateApplications do
   def change do
     create table(:applications) do
       add :status, :string, null: false
-      add :documents, :string, null: false
+      add :documents, {:array, :string}, null: false, default: []
       add :advert_id, references(:adverts, on_delete: :nothing), null: false
       add :user_id, references(:users, on_delete: :nothing), null: false
       add :student_id, references(:students, on_delete: :nothing), null: false

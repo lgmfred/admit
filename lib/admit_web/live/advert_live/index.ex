@@ -7,6 +7,7 @@ defmodule AdmitWeb.AdvertLive.Index do
   alias Admit.Accounts
   alias Admit.Adverts
   alias Admit.Adverts.Advert
+  alias Admit.Classes
   alias Admit.Repo
 
   @impl true
@@ -16,22 +17,13 @@ defmodule AdmitWeb.AdvertLive.Index do
     end
 
     user = Accounts.get_user_by_session_token(session["user_token"])
-
-    adverts = list_adverts()
-
-    list_classes =
-      if user.school_id do
-        list_classes(user.school_id)
-      else
-        []
-      end
+    adverts = list_adverts(user)
+    classes = list_classes(user)
 
     {:ok,
      socket
-     |> assign(:user, user)
-     |> assign(:list_classes, list_classes)
-     |> assign(filter: %{level: "", class: ""})
-     |> assign(:adverts, adverts)}
+     |> assign(user: user, classes: classes, adverts: adverts)
+     |> assign(filter: %{level: "", class: ""})}
   end
 
   @impl true
@@ -47,12 +39,14 @@ defmodule AdmitWeb.AdvertLive.Index do
     socket
     |> assign(:page_title, "Edit Advert")
     |> assign(:advert, advert)
+    |> assign(:classes, school_classes(socket.assigns.user))
   end
 
   defp apply_action(socket, :new, _params) do
     socket
     |> assign(:page_title, "New Advert")
     |> assign(:advert, %Advert{})
+    |> assign(:classes, school_classes(socket.assigns.user))
   end
 
   defp apply_action(socket, :index, _params) do
@@ -74,7 +68,7 @@ defmodule AdmitWeb.AdvertLive.Index do
 
   def handle_event("filter", %{"level" => level, "class" => class}, socket) do
     filter = %{level: level, class: class}
-    adverts = list_adverts(filter)
+    adverts = list_adverts(socket.assigns.user, filter)
     {:noreply, assign(socket, adverts: adverts, filter: filter)}
   end
 
@@ -103,18 +97,51 @@ defmodule AdmitWeb.AdvertLive.Index do
     {:noreply, assign(socket, :adverts, filtered_adverts)}
   end
 
-  defp list_adverts do
-    Adverts.list_adverts()
+  def list_adverts(user, filter \\ %{level: "", class: ""}) do
+    case user do
+      %{school_id: nil} -> Adverts.list_adverts(filter)
+      %{school_id: school_id} -> Adverts.list_school_adverts(school_id, filter)
+      _ -> []
+    end
     |> Repo.preload([:school, :class])
   end
 
-  defp list_adverts(filter) do
-    Adverts.list_adverts(filter)
-    |> Repo.preload([:school, :class])
+  def school_classes(user) do
+    case user do
+      %{school_id: nil} ->
+        [{"Select Class", nil}]
+
+      %{school_id: school_id} ->
+        classes =
+          Classes.list_classes(school_id)
+          |> Enum.map(fn class -> {class.name, class.id} end)
+          |> Enum.uniq()
+          |> Enum.sort()
+
+        [{"Select Class", nil} | classes]
+    end
   end
 
-  def list_classes(school_id) do
-    Admit.Classes.list_classes(school_id)
-    |> Enum.map(fn class -> {class.name, class.id} end)
+  def list_classes(user) do
+    case user do
+      %{school_id: nil} ->
+        nursery = ["Select Class": "", Baby: "Baby", Middle: "Middle", Top: "Top"]
+        primary = Enum.map(1..7, fn x -> {"P.#{x}", "P.#{x}"} end)
+        secondary = Enum.map(1..6, fn x -> {"S.#{x}", "S.#{x}"} end)
+
+        nursery ++ primary ++ secondary
+
+      %{school_id: school_id} ->
+        classes =
+          Classes.list_classes(school_id)
+          |> Enum.map(fn class -> {class.name, class.name} end)
+          |> Enum.uniq()
+          |> Enum.sort()
+
+        [{"Select Class", nil} | classes]
+
+      _ ->
+        []
+    end
   end
 end

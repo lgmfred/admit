@@ -14,7 +14,7 @@
     <%= error_tag f, :deadline %>
 
     <%= label f, :class %>
-    <%= select f, :class_id, @list_classes, prompt: "Select class" %>
+    <%= select f, :class_id, @classes %>
     <%= error_tag f, :class_id %>
   
     <%= label f, :description %>

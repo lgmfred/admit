@@ -6,7 +6,7 @@ defmodule Admit.Applications.Application do
   import Ecto.Changeset
 
   schema "applications" do
-    field :documents, :string
+    field :documents, {:array, :string}, default: []
     field :status, :string
     belongs_to :advert, Admit.Adverts.Advert
     belongs_to :user, Admit.Accounts.User

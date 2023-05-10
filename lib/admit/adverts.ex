@@ -18,7 +18,7 @@ defmodule Admit.Adverts do
 
   """
   def list_adverts do
-    Repo.all(Advert)
+    Repo.all(from a in Advert, order_by: [asc: a.id])
   end
 
   @doc """
@@ -28,6 +28,17 @@ defmodule Admit.Adverts do
   """
   def list_adverts(filter) when is_map(filter) do
     from(Advert)
+    |> filter_by_school_level(filter)
+    |> filter_by_class(filter)
+    |> Repo.all()
+  end
+
+  def list_school_adverts(school_id, filter \\ %{level: "", class: ""})
+      when is_map(filter) do
+    from(a in Advert,
+      where: a.school_id == ^school_id,
+      order_by: [asc: a.id]
+    )
     |> filter_by_school_level(filter)
     |> filter_by_class(filter)
     |> Repo.all()

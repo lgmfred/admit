@@ -14,17 +14,7 @@ defmodule AdmitWeb.AdvertLive.Show do
 
     user = Accounts.get_user_by_session_token(session["user_token"])
 
-    adverts =
-      Adverts.list_adverts()
-      |> Repo.preload([:school, :class])
-
-    list_classes = if user.id, do: [], else: Index.list_classes(user.school_id)
-
-    {:ok,
-     socket
-     |> assign(:user, user)
-     |> assign(:list_classes, list_classes)
-     |> assign(:adverts, adverts)}
+    {:ok, assign(socket, user: user)}
   end
 
   @impl true
@@ -33,12 +23,19 @@ defmodule AdmitWeb.AdvertLive.Show do
       Adverts.get_advert!(id)
       |> Repo.preload([:school, :class])
 
+    live_action = socket.assigns.live_action
+    user = socket.assigns.user
+
     {:noreply,
      socket
      |> assign(:page_title, page_title(socket.assigns.live_action))
-     |> assign(:advert, advert)}
+     |> assign(:advert, advert)
+     |> assign(:classes, list_classes(live_action, user))}
   end
 
   defp page_title(:show), do: "Show Advert"
   defp page_title(:edit), do: "Edit Advert"
+
+  defp list_classes(:show, user), do: Index.list_classes(user)
+  defp list_classes(:edit, user), do: Index.school_classes(user)
 end
