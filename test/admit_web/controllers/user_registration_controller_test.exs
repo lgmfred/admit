@@ -9,12 +9,12 @@ defmodule AdmitWeb.UserRegistrationControllerTest do
       response = html_response(conn, 200)
       assert response =~ "<h1>Register</h1>"
       assert response =~ "Log in</a>"
-      assert response =~ "Register</a>"
+      assert response =~ "Register</button>"
     end
 
     test "redirects if already logged in", %{conn: conn} do
       conn = conn |> log_in_user(user_fixture()) |> get(Routes.user_registration_path(conn, :new))
-      assert redirected_to(conn) == "/"
+      assert redirected_to(conn) == "/adverts"
     end
   end
 
@@ -29,10 +29,10 @@ defmodule AdmitWeb.UserRegistrationControllerTest do
         })
 
       assert get_session(conn, :user_token)
-      assert redirected_to(conn) == "/"
+      assert redirected_to(conn) == "/adverts"
 
       # Now do a logged in request and assert on the menu
-      conn = get(conn, "/")
+      conn = get(conn, "/adverts")
       response = html_response(conn, 200)
       assert response =~ email
       assert response =~ "Account</a>"

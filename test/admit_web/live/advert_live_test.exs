@@ -29,7 +29,7 @@ defmodule AdmitWeb.AdvertLiveTest do
       school = school_fixture()
       {:ok, school} = Admit.Schools.add_admin(school.id, user.email)
       class = class_fixture(%{school_id: school.id})
-      advert = advert_fixture(%{school_id: school.id, class_id: class.id})
+      _advert = advert_fixture(%{school_id: school.id, class_id: class.id})
       {:ok, _index_live, html} = live(conn, Routes.advert_index_path(conn, :index))
 
       assert html =~ "Listing Adverts"

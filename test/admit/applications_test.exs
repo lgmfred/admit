@@ -97,15 +97,15 @@ defmodule Admit.ApplicationsTest do
         })
 
       update_attrs = %{
-        documents: "some updated documents",
-        status: "some updated status"
+        documents: ["/uploads/some_updated_documents"],
+        status: "review"
       }
 
       assert {:ok, %Application{} = application} =
                Applications.update_application(application, update_attrs)
 
-      assert application.documents == "some updated documents"
-      assert application.status == "some updated status"
+      assert application.documents == ["/uploads/some_updated_documents"]
+      assert application.status == "review"
     end
 
     test "update_application/2 with invalid data returns error changeset" do
